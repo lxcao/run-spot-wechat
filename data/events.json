@@ -1,0 +1,141 @@
+{
+  "team": {
+    "name": "甲骨文魔都跑团",
+    "slogan": "每个周末做回自己，八卦别人",
+    "logo": null,
+    "city": "上海",
+    "default_meet_msg": "周六早上 7:00 集合，跑完一起吃早饭 ☕"
+  },
+  "events": [
+    {
+      "id": "2026-09-19",
+      "title": "徐汇滨江慢跑",
+      "date": "2026-09-19",
+      "weekday": "周六",
+      "time": "07:00",
+      "meet": {
+        "name": "星巴克（徐汇滨江店）",
+        "address": "上海市徐汇区龙腾大道 3222 号 1 层 101 单元",
+        "lng": 121.463635,
+        "lat": 31.180804,
+        "poiid": "B0HB9ZEDMI"
+      },
+      "starbucks": {
+        "name": "星巴克（徐汇滨江店）",
+        "address": "上海市徐汇区龙腾大道 3222 号 1 层 101 单元",
+        "lng": 121.463635,
+        "lat": 31.180804,
+        "poiid": "B0HB9ZEDMI"
+      },
+      "route": "徐汇滨江绿地",
+      "note": "穿跑团服装",
+      "status": "upcoming",
+      "attendees": null,
+      "weather": null
+    },
+    {
+      "id": "2026-09-12",
+      "title": "徐汇滨江晨跑",
+      "date": "2026-09-12",
+      "weekday": "周六",
+      "time": "07:00",
+      "meet": {
+        "name": "星巴克（徐汇滨江店）",
+        "address": "上海市徐汇区龙腾大道 3222 号 1 层 101 单元",
+        "lng": 121.463635,
+        "lat": 31.180804,
+        "poiid": "B0HB9ZEDMI"
+      },
+      "starbucks": {
+        "name": "星巴克（徐汇滨江店）",
+        "address": "上海市徐汇区龙腾大道 3222 号 1 层 101 单元",
+        "lng": 121.463635,
+        "lat": 31.180804,
+        "poiid": "B0HB9ZEDMI"
+      },
+      "route": "徐汇滨江绿地绕园 5 圈",
+      "note": "跑团服装",
+      "status": "past",
+      "attendees": 8,
+      "weather": "晴"
+    },
+    {
+      "id": "2025-09-05",
+      "title": "世博源沿江跑",
+      "date": "2025-09-05",
+      "weekday": "周五",
+      "time": "07:00",
+      "meet": {
+        "name": "梅赛德斯奔驰文化中心",
+        "address": "上海市浦东新区世博大道 1200 号",
+        "lng": 121.493397,
+        "lat": 31.188847,
+        "poiid": "B00155QXTH"
+      },
+      "starbucks": {
+        "name": "星巴克 世博源",
+        "address": "上海市浦东新区国展路 1099 号 1 层",
+        "lng": 121.493082,
+        "lat": 31.182146,
+        "poiid": "B0FFJFT8ZB"
+      },
+      "route": "沿黄浦江 10km",
+      "note": "穿跑团服装",
+      "status": "past",
+      "attendees": 12,
+      "weather": "阴"
+    },
+    {
+      "id": "2025-08-30",
+      "title": "世纪公园晨跑",
+      "date": "2025-08-30",
+      "weekday": "周六",
+      "time": "07:00",
+      "meet": {
+        "name": "世纪公园 7号门",
+        "address": "上海市浦东新区锦绣路 1001 号",
+        "lng": 121.54927,
+        "lat": 31.210883,
+        "poiid": "B00156YM3Q"
+      },
+      "starbucks": {
+        "name": "星巴克 世纪公园",
+        "address": "上海市浦东新区花木街道樱花路 869 号",
+        "lng": 121.561485,
+        "lat": 31.211498,
+        "poiid": "B0FFFEDY1G"
+      },
+      "route": "绕世纪公园 3 圈（约 9km）",
+      "note": null,
+      "status": "past",
+      "attendees": 18,
+      "weather": "多云"
+    },
+    {
+      "id": "2025-08-23",
+      "title": "黄浦滨江夜跑",
+      "date": "2025-08-23",
+      "weekday": "周六",
+      "time": "19:30",
+      "meet": {
+        "name": "十六铺码头",
+        "address": "上海市黄浦区中山东二路 531 号",
+        "lng": 121.498235,
+        "lat": 31.227999,
+        "poiid": "B00155QH2S"
+      },
+      "starbucks": {
+        "name": "星巴克 十六铺码头",
+        "address": "上海市黄浦区中山东二路 531 号",
+        "lng": 121.498666,
+        "lat": 31.225559,
+        "poiid": "B0HBR643YQ"
+      },
+      "route": "外滩源 → 杨浦大桥 12km",
+      "note": "夜跑带头灯",
+      "status": "past",
+      "attendees": 15,
+      "weather": "晴"
+    }
+  ]
+}
