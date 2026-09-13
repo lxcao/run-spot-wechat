@@ -1,11 +1,9 @@
 // utils/weather.js
-// 封装高德天气 API：拉取预报 + 缓存 + 解析
+// 拉取天气预报（通过云函数代理，避开域名白名单限制）
 
-const AMAP_KEY = 'daa291695ce6f29af3b05436ab1122da';
-const CITY = '310000';
-
-const CACHE_TTL = 60 * 60 * 1000;
+const CACHE_TTL = 60 * 60 * 1000; // 1 小时缓存
 let cache = null;
+let cacheTime = 0;
 
 function emoji(w) {
   const m = {
@@ -15,24 +13,24 @@ function emoji(w) {
   return m[w] || '🌤️';
 }
 
+// 🆕 改为调云函数
 async function fetchForecast() {
-  if (cache && Date.now() - cache.fetchedAt < CACHE_TTL) {
-    return cache.data;
+  if (cache && Date.now() - cacheTime < CACHE_TTL) {
+    return cache;
   }
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: `https://restapi.amap.com/v3/weather/weatherInfo?key=${AMAP_KEY}&city=${CITY}&extensions=all`,
-      success: (res) => {
-        if (res.data && res.data.status === '1' && res.data.forecasts) {
-          cache = { fetchedAt: Date.now(), data: res.data.forecasts[0].casts };
-          resolve(res.data.forecasts[0].casts);
-        } else {
-          reject(new Error('weather API error: ' + JSON.stringify(res.data)));
-        }
-      },
+  const res = await new Promise((resolve, reject) => {
+    wx.cloud.callFunction({
+      name: 'getWeather',
+      success: (r) => resolve(r),
       fail: reject,
     });
   });
+  if (res.result && res.result.code === 0 && res.result.data) {
+    cache = res.result.data;
+    cacheTime = Date.now();
+    return cache;
+  }
+  throw new Error('getWeather 云函数错误: ' + JSON.stringify(res.result));
 }
 
 function toWeather(c, label) {
@@ -65,16 +63,8 @@ async function getWeekendWeather() {
     if (todayWeek === 5 || todayWeek === 6 || todayWeek === 0) {
       day1 = casts[0];
       day2 = casts[1];
-      if (todayWeek === 6) {
-        label1 = '今天';
-        label2 = '明天';
-      } else if (todayWeek === 0) {
-        label1 = '今天';
-        label2 = '明天';
-      } else {
-        label1 = '今天';
-        label2 = '明天';
-      }
+      label1 = '今天';
+      label2 = '明天';
     } else {
       // 周一~四：找最近的周六 + 周日
       const sat = casts.find((c) => String(c.week) === '6');

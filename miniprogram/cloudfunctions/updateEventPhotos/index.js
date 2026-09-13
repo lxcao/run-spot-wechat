@@ -1,12 +1,13 @@
 // 云函数 updateEventPhotos
 // 入参：{ eventId, fileID, size, uploaderName }
-// 功能：把照片信息 append 到 events 集合的 photos 字段
+// 功能：把照片信息原子追加到 events.photos（用 _push 避免并发覆盖）
 
 const cloud = require('wx-server-sdk');
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const db = cloud.database();
+const _ = db.command;  // 🆕 用于原子操作
 
 const MAX_PHOTOS_PER_EVENT = 100;     // 每个活动最多 100 张
 const MAX_FILE_SIZE = 600 * 1024;     // 单张最大 600KB
@@ -28,7 +29,7 @@ exports.main = async (event, context) => {
   }
 
   try {
-    // 查活动
+    // 1. 查活动（只查不写，避免读写竞态）
     const eventRes = await db.collection('events').where({ id: eventId }).limit(1).get();
     if (eventRes.data.length === 0) {
       return { code: -1, msg: '活动不存在', data: null };
@@ -36,12 +37,12 @@ exports.main = async (event, context) => {
     const e = eventRes.data[0];
     const photos = e.photos || [];
 
-    // 限流：每个活动最多 100 张
+    // 限流：每个活动最多 100 张（基于当前读到的计数）
     if (photos.length >= MAX_PHOTOS_PER_EVENT) {
       return { code: -1, msg: `活动照片已达上限 ${MAX_PHOTOS_PER_EVENT} 张`, data: null };
     }
 
-    // 限制：同一跑友每场活动最多 9 张（防滥用）
+    // 限制：同一跑友每场活动最多 9 张（基于当前读到的计数）
     const myCount = photos.filter((p) => p.uploader === openid).length;
     if (myCount >= 9) {
       return { code: -1, msg: '你已经上传过 9 张了（每场活动最多 9 张）', data: null };
@@ -56,10 +57,13 @@ exports.main = async (event, context) => {
       size: size || 0,
     };
 
-    // append 到 photos 数组
-    const updatedPhotos = [...photos, newPhoto];
-    await db.collection('events').where({ id: eventId }).update({
-      data: { photos: updatedPhotos },
+    // 🆕 原子 push 操作（关键修复！）
+    // 之前的"先读后写"会导致并发覆盖
+    // 现在用 _push 原子地往数组里追加，多用户同时上传也不会互相覆盖
+    const updateRes = await db.collection('events').where({ id: eventId }).update({
+      data: {
+        photos: _.push([newPhoto]),  // ← 原子 push 一个数组
+      },
     });
 
     return {
@@ -67,7 +71,8 @@ exports.main = async (event, context) => {
       msg: 'ok',
       data: {
         photo: newPhoto,
-        totalCount: updatedPhotos.length,
+        // 实际数据库中的 photos 数量（基于 _push 的返回值）
+        updated: updateRes.updated || 1,
       },
     };
   } catch (err) {

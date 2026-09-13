@@ -49,7 +49,7 @@
     "ignoreUploadUnusedFiles": true,
     "compileWorklet": false,
     "localPlugins": false,
-    "condition": false
+    "condition": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.7.0",
@@ -61,5 +61,8 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "simulatorPluginLibVersion": {}
+  "simulatorPluginLibVersion": {
+    "wxext14566970e7e9f62": "2.27.3"
+  },
+  "projectArchitecture": "multiPlatform"
 }

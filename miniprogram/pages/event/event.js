@@ -25,6 +25,13 @@ Page({
     this.loadData();
   },
 
+  // 🆕 页面显示时强制刷新（确保别人上传的照片能看到）
+  onShow() {
+    if (this._eventId) {
+      this.loadData(true);  // 强制从云函数拉新数据
+    }
+  },
+
   async loadData() {
     this.setData({ loading: true });
 

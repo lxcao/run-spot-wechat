@@ -35,4 +35,7 @@ dist/
 
 # 微信开发者工具自动生成（个人本地配置）
 miniprogram/project.private.config.json
+miniprogram/project.miniapp.json
+miniprogram/app.miniapp.json
+miniprogram/i18n/
 miniprogram/.miniprogram/
