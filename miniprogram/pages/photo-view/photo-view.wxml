@@ -1,0 +1,46 @@
+<view class="viewer">
+  <!-- 黑色全屏背景 -->
+  <view class="viewer__bg" bindtap="onBack"></view>
+
+  <!-- 图片轮播 -->
+  <swiper
+    class="viewer__swiper"
+    current="{{current}}"
+    bindchange="onSwiperChange"
+    duration="300"
+    circular="{{false}}">
+    <block wx:for="{{photos}}" wx:key="fileID">
+      <swiper-item class="viewer__item">
+        <image
+          src="{{item.tempURL}}"
+          mode="aspectFit"
+          class="viewer__img"
+          binderror="onImgError"
+        ></image>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <!-- 返回按钮 -->
+  <view class="viewer__back" bindtap="onBack">
+    <text>‹</text>
+  </view>
+
+  <!-- 左右切换 -->
+  <view class="viewer__nav viewer__nav--prev" bindtap="onPrev" wx:if="{{current > 0}}">
+    <text>‹</text>
+  </view>
+  <view class="viewer__nav viewer__nav--next" bindtap="onNext" wx:if="{{current < total - 1}}">
+    <text>›</text>
+  </view>
+
+  <!-- 底部页码 -->
+  <view class="viewer__counter">
+    <text>{{current + 1}} / {{total}}</text>
+  </view>
+
+  <!-- 提示 -->
+  <view class="viewer__hint" wx:if="{{total > 1}}">
+    <text>左右滑动切换 · 点击图片返回</text>
+  </view>
+</view>

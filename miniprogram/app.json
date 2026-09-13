@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/home/home",
-    "pages/event/event"
+    "pages/event/event",
+    "pages/photo-view/photo-view"
   ],
   "window": {
     "backgroundTextStyle": "light",

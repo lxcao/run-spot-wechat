@@ -88,6 +88,35 @@
 
   <view class="empty" wx:else>📍 暂无地图数据</view>
 
+  <!-- 活动照片墙（v3 新增） -->
+  <view class="photos-section">
+    <view class="photos-section__title">
+      <text>📷 活动照片</text>
+      <text class="photos-section__count">({{event.photos ? event.photos.length : 0}})</text>
+    </view>
+
+    <view class="photos-grid" wx:if="{{event.photos && event.photos.length > 0}}">
+      <view
+        class="photos-grid__item"
+        wx:for="{{event.photos}}"
+        wx:key="fileID"
+        bindtap="onPhotoTap"
+        data-index="{{index}}">
+        <image src="{{item.tempURL}}" mode="aspectFill" class="photos-grid__img" binderror="onImgError" data-index="{{index}}"></image>
+      </view>
+    </view>
+
+    <view class="photos-empty" wx:else>
+      <text>📷</text>
+      <text>暂无照片，跑完上传你的精彩瞬间</text>
+    </view>
+
+    <view class="photos-upload-btn" bindtap="onUploadPhoto">
+      <text>📷</text>
+      <text>+ 上传照片</text>
+    </view>
+  </view>
+
   <!-- footer padding 给底部固定按钮留空间 -->
   <view class="footer" wx:if="{{team}}">
     <view>{{team.name}}</view>

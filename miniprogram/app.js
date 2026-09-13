@@ -18,8 +18,8 @@ App({
     this.loadEvents();
   },
 
-  async loadEvents() {
-    if (this.globalData.loaded) return this.globalData;
+  async loadEvents(forceRefresh = false) {
+    if (this.globalData.loaded && !forceRefresh) return this.globalData;
     try {
       const res = await wx.cloud.callFunction({ name: 'getEvents' });
       if (res.result && res.result.code === 0) {

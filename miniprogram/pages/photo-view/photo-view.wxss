@@ -1,0 +1,139 @@
+/* pages/photo-view/photo-view.wxss */
+
+.viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  z-index: 9999;
+}
+
+.viewer__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.viewer__swiper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 100%;
+}
+
+.viewer__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.viewer__img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 返回箭头（左上） */
+.viewer__back {
+  position: absolute;
+  top: 60rpx;
+  left: 24rpx;
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(10rpx);
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.viewer__back text {
+  color: white;
+  font-size: 56rpx;
+  font-weight: 300;
+  line-height: 1;
+  margin-top: -6rpx;
+}
+
+.viewer__back:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 左右切换 */
+.viewer__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(10rpx);
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.viewer__nav--prev {
+  left: 24rpx;
+}
+
+.viewer__nav--next {
+  right: 24rpx;
+}
+
+.viewer__nav text {
+  color: white;
+  font-size: 64rpx;
+  font-weight: 300;
+  line-height: 1;
+  margin-top: -8rpx;
+}
+
+.viewer__nav:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 底部页码 */
+.viewer__counter {
+  position: absolute;
+  bottom: 100rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 28rpx;
+  font-weight: 500;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8rpx 24rpx;
+  border-radius: 100rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+/* 提示 */
+.viewer__hint {
+  position: absolute;
+  bottom: 40rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 22rpx;
+  z-index: 10;
+  letter-spacing: 1rpx;
+}

@@ -4,13 +4,15 @@
 >
 > 群友在微信里点开 → 直接看本周集合点 + 旁边星巴克 + 历史活动 + 周末天气
 
-## 🎯 项目状态（v2）
+## 🎯 项目状态（v2 + v3 跑通）
 
 - ✅ **H5 网页**（CloudBase 永久免费子域名，国内访问）
 - ✅ **微信小程序**（云函数 + 云数据库，群主在云开发控制台改数据，**30 秒生效**）
 - ✅ **本周末天气卡片**（高德 API 实时拉取）
 - ✅ **地图 + 双 pin**（集合点 + 星巴克）
 - ✅ **一键唤起系统地图**导航
+- ✅ **🆕 活动照片墙**（v3：跑友拍照上传，云存储 + 自定义预览页）
+- ✅ **🆕 全屏图片预览**（带返回箭头、左右滑动、页码）
 - ✅ **真机 / 模拟器全部跑通**
 
 ---
@@ -44,20 +46,27 @@ run-spot-wechat/
 │   │   │   ├── home.wxml
 │   │   │   ├── home.wxss
 │   │   │   └── home.json
-│   │   └── event/                           # 详情页：信息卡 + 地图 + 双 pin + 导航
-│   │       ├── event.js
-│   │       ├── event.wxml
-│   │       ├── event.wxss
-│   │       └── event.json
+│   │   ├── event/                           # 详情页：信息卡 + 地图 + 双 pin + 照片墙 + 导航
+│   │   │   ├── event.js
+│   │   │   ├── event.wxml
+│   │   │   ├── event.wxss
+│   │   │   └── event.json
+│   │   └── photo-view/                      # 🆕 v3：全屏图片预览（带返回箭头）
+│   │       ├── photo-view.js
+│   │       ├── photo-view.wxml
+│   │       ├── photo-view.wxss
+│   │       └── photo-view.json
 │   │
 │   ├── cloudfunctions/                      # 云函数
 │   │   ├── getEvents/                       # 查所有活动 + 跑团信息
-│   │   └── getEvent/                        # 查单个活动
+│   │   ├── getEvent/                        # 查单个活动
+│   │   └── updateEventPhotos/                # 🆕 v3：上传照片到 events.photos
 │   │
 │   ├── utils/                               # 工具函数
 │   │   ├── date.js                          # 日期格式化
 │   │   ├── nav.js                           # 地图导航封装
-│   │   └── weather.js                       # 高德天气 API
+│   │   ├── weather.js                       # 高德天气 API
+│   │   └── upload.js                        # 🆕 v3：选图+压缩+上传工具
 │   │
 │   ├── assets/icons/                        # 地图 pin 图标
 │   │   ├── meet-pin.png                     # 集合点（甲骨文红）
@@ -95,16 +104,35 @@ run-spot-wechat/
         ↓
    改活动数据
         ↓
-   ┌────────┐  ┌────────┐
-   │ events │  │  team  │  ← 云开发 NoSQL 集合
-   │ 集合   │  │ 集合   │  (永久免费)
-   └────────┘  └────────┘
-        ↑
-   云函数 getEvents
-        ↑
+   ┌────────┐  ┌────────┐  ┌──────────┐
+   │ events │  │  team  │  │  存储    │  ← 云开发
+   │ 集合   │  │ 集合   │  │ (云存储) │  (永久免费)
+   └────────┘  └────────┘  └──────────┘
+        ↑           ↑            ↑
+   云函数      云函数       wx.cloud
+   getEvents   getEvent      .uploadFile
+        ↑           ↑            ↑
    微信小程序打开
         ↓
-   主页 + 详情页显示
+   主页 + 详情页 + 照片墙
+```
+
+### v3 照片流程
+
+```
+跑友点 [📷 上传照片]
+  ↓
+wx.chooseMedia 选图（最多 9 张）
+  ↓
+wx.compressImage 压缩到 500KB
+  ↓
+wx.cloud.uploadFile 上传到 cloud://xxx/events/2026-09-12/xxx.jpg
+  ↓
+云函数 updateEventPhotos 写数据库
+  ↓
+前端立刻合并新照片 → setData
+  ↓
+照片墙显示新缩略图
 ```
 
 ---
@@ -114,9 +142,10 @@ run-spot-wechat/
 | 端 | 技术 |
 |---|---|
 | **H5 网页** | 纯 HTML + CSS + JS（无框架）<br>+ Leaflet 地图 + 高德瓦片<br>+ uri.amap.com 导航跳转<br>+ 高德天气 API |
-| **小程序** | 微信原生（wxml/wxss/js）<br>+ 小程序 `<map>` 组件（腾讯底图）<br>+ `wx.openLocation` 唤起系统地图<br>+ 微信云开发（云函数 + NoSQL 集合） |
-| **后端** | 微信云开发（个人版，免费）<br>+ 2 个云函数（getEvents / getEvent）<br>+ 2 个 NoSQL 集合（events / team） |
+| **小程序** | 微信原生（wxml/wxss/js）<br>+ 小程序 `<map>` 组件（腾讯底图）<br>+ `wx.openLocation` 唤起系统地图<br>+ 微信云开发（云函数 + NoSQL 集合 + 云存储） |
+| **后端** | 微信云开发（个人版，免费）<br>+ **3 个云函数**（getEvents / getEvent / updateEventPhotos）<br>+ **2 个 NoSQL 集合**（events / team）<br>+ **1 个云存储**（events/{date}/ 目录） |
 | **第三方** | 高德地图 Web Service API（地理编码 + 天气） |
+| **图片处理** | wx.chooseMedia（选图）<br>+ wx.compressImage（压缩）<br>+ wx.cloud.uploadFile（上传）<br>+ wx.cloud.getTempFileURL（转 https URL） |
 
 ---
 
@@ -141,9 +170,10 @@ python3 -m http.server 8080
 4. 创建 NoSQL 集合：
    - `team`（导入 `data/team-import.json`）
    - `events`（导入 `data/cloud-import.json`）
-5. 上传云函数：
+5. 上传云函数（3 个）：
    - 右键 `cloudfunctions/getEvents` → 上传并部署
    - 右键 `cloudfunctions/getEvent` → 上传并部署
+   - 右键 `cloudfunctions/updateEventPhotos` → 上传并部署（v3 照片）
 6. ⌘R 刷新模拟器
 7. 开发者工具 → 详情 → 本地设置 → 勾选"不校验合法域名"（用于拉高德天气）
 
@@ -151,7 +181,7 @@ python3 -m http.server 8080
 
 ---
 
-## 👥 群主使用流程（v2 核心优势）
+## 👥 群主使用流程
 
 ### 改活动（推荐流程）
 
@@ -166,6 +196,12 @@ python3 -m http.server 8080
 2. 改跑团名 / slogan / 城市等
 3. **30 秒后生效**
 
+### 查看跑友上传的照片
+
+1. 云开发控制台 → **存储** → `events/{活动 ID}/` 目录
+2. 可以直接下载 / 删除 / 看上传时间
+3. 也可以看每张照片的上传者（`uploader` = 跑友 openid）
+
 > 详细字段说明见 [docs/04-EVENTS-JSON-GUIDE.md](docs/04-EVENTS-JSON-GUIDE.md)
 
 ---
@@ -175,19 +211,23 @@ python3 -m http.server 8080
 | 问题 | 解决 |
 |---|---|
 | 模拟器一直"加载中" | 检查云开发控制台 → 数据库是否已导入 |
-| `cloud.callFunction` 报错 | 检查云函数是否上传成功（云开发控制台 → 云函数列表） |
+| `cloud.callFunction` 报错 | 检查云函数是否上传成功（云开发控制台 → 云函数列表）|
 | 天气显示"暂无数据" | 开发者工具 → 详情 → 勾选"不校验合法域名" |
 | 微信里打开小程序白屏 | 真机预览需要发布到"开发版"或"正式版" |
 | 导航按钮点不动 | 检查 meet.lng / meet.lat 是否为数字（非 null） |
+| **照片上传后不显示** | 检查云函数 `updateEventPhotos` 是否已上传，events 集合的 `photos` 字段是否有数据 |
+| **照片显示空白** | fileID 必须在 `<image>` 标签转成 tempURL（v3 代码已自动处理）|
+| **云存储看不到照片** | 检查云开发控制台 → 存储 → `events/` 目录 |
 
 ---
 
 ## 🛣️ 路线图
 
 - ✅ **v1**：H5 + CloudBase（已完成）
-- ✅ **v2**：H5 + 小程序 + 云开发（已完成）
-- ⏳ **v3**：跑友报名 / 打卡 / 拍照（计划中）
-- ⏳ **v4**：订阅消息推送 / 跑团成员主页
+- ✅ **v2**：H5 + 小程序 + 云开发 + 天气（已完成）
+- ✅ **v3**：照片上传 + 全屏预览（已完成！）
+- ⏳ **v4**：跑友报名 / 打卡 / 跑团排行（计划中）
+- ⏳ **v5**：订阅消息推送 / 跑团成员主页
 
 ---
 
@@ -202,6 +242,7 @@ python3 -m http.server 8080
 | 小程序 | [05-MINIPROGRAM-MIGRATION](docs/05-MINIPROGRAM-MIGRATION.md) |
 | 云开发 | [06-CLOUD-DEVELOPMENT](docs/06-CLOUD-DEVELOPMENT.md) |
 | 部署 | [07-V2-DEPLOY](docs/07-V2-DEPLOY.md) |
+| 照片 | [08-V3-PHOTOS](docs/08-V3-PHOTOS.md) |
 
 ---
 

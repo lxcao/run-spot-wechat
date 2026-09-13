@@ -2,6 +2,7 @@
 const app = getApp();
 const { openInMap } = require('../../utils/nav.js');
 const { weatherEmoji } = require('../../utils/date.js');
+const { chooseAndUpload } = require('../../utils/upload.js');
 
 Page({
   data: {
@@ -44,6 +45,24 @@ Page({
 
     event._weatherEmoji = event.weather ? weatherEmoji(event.weather) : '';
     const team = data.team;
+
+    // 把 photos 里的 cloud:// fileID 转成可显示的 https 临时 URL
+    if (event.photos && event.photos.length > 0) {
+      try {
+        const fileList = event.photos.map((p) => p.fileID);
+        const tempRes = await wx.cloud.getTempFileURL({ fileList });
+        if (tempRes.fileList) {
+          event.photos.forEach((p, i) => {
+            const info = tempRes.fileList[i];
+            if (info && info.tempFileURL) {
+              p.tempURL = info.tempFileURL;
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('getTempFileURL 失败', e);
+      }
+    }
 
     wx.setNavigationBarTitle({ title: event.title || event.meet.name });
 
@@ -161,5 +180,45 @@ Page({
         }
       },
     });
+  },
+
+  // 上传照片
+  async onUploadPhoto() {
+    if (!this.data.event) return;
+    try {
+      // chooseAndUpload 返回 { uploaded: [...photos with tempURL] }
+      const result = await chooseAndUpload(this.data.event.id);
+      const newPhotos = result.uploaded || [];
+      if (newPhotos.length === 0) {
+        wx.showToast({ title: '没有上传成功', icon: 'none' });
+        return;
+      }
+      // 直接把新照片合并到现有 photos（不重新 loadData）
+      const existing = this.data.event.photos || [];
+      this.setData({
+        'event.photos': [...existing, ...newPhotos],
+      });
+      wx.showToast({ title: `上传成功 ${newPhotos.length} 张`, icon: 'success' });
+    } catch (err) {
+      console.error('上传失败', err);
+      wx.showToast({ title: err.message || '上传失败', icon: 'none' });
+    }
+  },
+
+  // 预览照片（点击缩略图）
+  onPhotoTap(e) {
+    const photos = (this.data.event && this.data.event.photos) || [];
+    if (photos.length === 0) return;
+    const index = e.currentTarget.dataset.index || 0;
+    wx.navigateTo({
+      url: `/pages/photo-view/photo-view?photos=${encodeURIComponent(
+        JSON.stringify(photos)
+      )}&current=${index}`,
+    });
+  },
+
+  // 图片加载失败（调试用）
+  onImgError(e) {
+    console.warn('图片加载失败', e);
   },
 });
