@@ -1,0 +1,373 @@
+/* pages/event-create/event-create.wxss */
+
+.container {
+  min-height: 100vh;
+  background: #fafafa;
+  padding-bottom: 60rpx;
+}
+
+/* ============== 加载中 ============== */
+
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9aa0a6;
+  font-size: 28rpx;
+  background: #fafafa;
+}
+
+/* ============== 未授权页 ============== */
+
+.unauthorized {
+  min-height: 100vh;
+  background: #fafafa;
+  padding: 80rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.unauthorized__icon {
+  font-size: 100rpx;
+  margin-bottom: 24rpx;
+}
+
+.unauthorized__title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16rpx;
+}
+
+.unauthorized__desc {
+  font-size: 26rpx;
+  color: #5f6368;
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+.unauthorized__card {
+  width: 100%;
+  background: white;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+.unauthorized__card-label {
+  font-size: 24rpx;
+  color: #5f6368;
+  margin-bottom: 16rpx;
+}
+
+.unauthorized__openid {
+  background: #f4f5f7;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  font-family: monospace;
+  color: #1a1a1a;
+  word-break: break-all;
+  border: 2rpx dashed #c74634;
+  margin-bottom: 12rpx;
+}
+
+.unauthorized__openid:active {
+  background: #faebe9;
+}
+
+.unauthorized__hint {
+  font-size: 22rpx;
+  color: #9aa0a6;
+  text-align: center;
+}
+
+.unauthorized__steps {
+  width: 100%;
+  background: white;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+.unauthorized__step-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 20rpx;
+}
+
+.unauthorized__step {
+  font-size: 26rpx;
+  color: #5f6368;
+  line-height: 1.8;
+  padding-left: 12rpx;
+}
+
+.unauthorized__back {
+  background: linear-gradient(135deg, #c74634 0%, #a12b1a 100%);
+  color: white;
+  padding: 24rpx 60rpx;
+  border-radius: 100rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-top: 20rpx;
+}
+
+.unauthorized__back:active {
+  opacity: 0.85;
+}
+
+/* ============== 通用卡片 ============== */
+
+.form-card {
+  background: white;
+  margin: 24rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  padding: 8rpx 32rpx;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  border-bottom: 2rpx solid #f4f5f7;
+}
+
+.section-title__hint {
+  font-size: 22rpx;
+  color: #9aa0a6;
+  font-weight: 400;
+}
+
+.toggle-icon {
+  font-size: 24rpx;
+  color: #9aa0a6;
+}
+
+/* ============== 表单行 ============== */
+
+.form-row {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 2rpx solid #f4f5f7;
+  gap: 24rpx;
+}
+
+.form-row:last-child {
+  border-bottom: none;
+}
+
+.form-row--column {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  flex-shrink: 0;
+  min-width: 140rpx;
+}
+
+.form-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1a1a1a;
+  padding: 8rpx 0;
+}
+
+.form-value--placeholder {
+  color: #9aa0a6;
+}
+
+.form-input {
+  width: 100%;
+  font-size: 28rpx;
+  color: #1a1a1a;
+  padding: 8rpx 0;
+  box-sizing: border-box;
+}
+
+.form-input--sub {
+  font-size: 24rpx;
+  color: #5f6368;
+}
+
+/* ============== 联想下拉 ============== */
+
+.suggestions {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  margin-top: 8rpx;
+  overflow: hidden;
+  max-height: 600rpx;
+  overflow-y: auto;
+}
+
+.suggestions__item {
+  padding: 20rpx 24rpx;
+  border-bottom: 2rpx solid #e8eaed;
+}
+
+.suggestions__item:last-child {
+  border-bottom: none;
+}
+
+.suggestions__item:active {
+  background: #e8eaed;
+}
+
+.suggestions__name {
+  font-size: 28rpx;
+  color: #1a1a1a;
+  font-weight: 500;
+  margin-bottom: 6rpx;
+}
+
+.suggestions__addr {
+  font-size: 22rpx;
+  color: #5f6368;
+}
+
+/* ============== 提交按钮 ============== */
+
+/* ============== 提交按钮（内联块级，删除 section 之上） ============== */
+
+.submit-block {
+  padding: 24rpx 0 8rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #c74634 0%, #a12b1a 100%);
+  color: white;
+  font-size: 30rpx;
+  font-weight: 700;
+  border-radius: 24rpx;
+  border: none;
+  letter-spacing: 2rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-btn[disabled] {
+  opacity: 0.5;
+}
+
+.submit-btn:active {
+  opacity: 0.85;
+}
+
+.submit-hint {
+  text-align: center;
+  font-size: 22rpx;
+  color: #9aa0a6;
+  margin-top: 12rpx;
+}
+
+/* ============== 删除列表 ============== */
+
+.empty-tip {
+  padding: 60rpx 0;
+  text-align: center;
+  color: #9aa0a6;
+  font-size: 26rpx;
+}
+
+.event-list {
+  padding-top: 8rpx;
+}
+
+.event-list__item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #f4f5f7;
+  gap: 20rpx;
+}
+
+.event-list__item:last-child {
+  border-bottom: none;
+}
+
+.event-list__item--hover {
+  background: #fafafa;
+}
+
+.event-list__date {
+  flex-shrink: 0;
+  width: 96rpx;
+  text-align: center;
+  border-right: 2rpx solid #f4f5f7;
+  padding-right: 16rpx;
+}
+
+.event-list__month {
+  font-size: 22rpx;
+  color: #9aa0a6;
+  letter-spacing: 2rpx;
+}
+
+.event-list__day {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  margin: 4rpx 0;
+}
+
+.event-list__weekday {
+  font-size: 22rpx;
+  color: #9aa0a6;
+}
+
+.event-list__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.event-list__title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-list__meta {
+  font-size: 24rpx;
+  color: #5f6368;
+  display: flex;
+  gap: 20rpx;
+}
+
+.event-list__delete {
+  flex-shrink: 0;
+  padding: 12rpx 24rpx;
+  background: rgba(199, 70, 52, 0.1);
+  color: #c74634;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.event-list__delete:active {
+  background: rgba(199, 70, 52, 0.2);
+}

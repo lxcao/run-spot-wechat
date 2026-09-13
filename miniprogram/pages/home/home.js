@@ -75,6 +75,11 @@ Page({
     wx.navigateTo({ url: `/pages/event/event?id=${id}` });
   },
 
+  // 跳到配置页
+  onConfigTap() {
+    wx.navigateTo({ url: '/pages/event-create/event-create' });
+  },
+
   // 群分享
   onShareAppMessage() {
     const { team, hero } = this.data;

@@ -1,8 +1,11 @@
 <view class="container">
   <!-- 品牌头（大 banner 样式，参考锡山马拉松） -->
   <view class="brand-header" wx:if="{{team}}">
-    <!-- 顶部小标签：城市 -->
+    <!-- 顶部小标签：配置（左）+ 城市（右），两端分散 -->
     <view class="brand-header__top">
+      <view class="config-btn" bindtap="onConfigTap">
+        <text>⚙️</text>
+      </view>
       <view class="city-tag">📍 {{team.city || '上海'}}</view>
     </view>
 

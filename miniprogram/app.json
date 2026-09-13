@@ -2,7 +2,8 @@
   "pages": [
     "pages/home/home",
     "pages/event/event",
-    "pages/photo-view/photo-view"
+    "pages/photo-view/photo-view",
+    "pages/event-create/event-create"
   ],
   "window": {
     "backgroundTextStyle": "light",

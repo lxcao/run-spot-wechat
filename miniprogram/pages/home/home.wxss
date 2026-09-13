@@ -36,7 +36,8 @@
   position: relative;
   z-index: 2;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;  /* 🆕 两端分散：配置在左，城市在右 */
+  align-items: center;
   margin-bottom: 24rpx;
 }
 
@@ -48,6 +49,26 @@
   border-radius: 100rpx;
   letter-spacing: 2rpx;
   backdrop-filter: blur(10rpx);
+}
+
+/* 配置按钮（齿轮） */
+.config-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56rpx;
+  height: 56rpx;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  backdrop-filter: blur(10rpx);
+  border: 2rpx solid rgba(255, 255, 255, 0.25);
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.config-btn:active {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0.95);
 }
 
 .brand-header__hero {

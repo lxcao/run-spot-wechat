@@ -1,0 +1,187 @@
+<!-- 加载中 -->
+<view class="loading" wx:if="{{!checkedAdmin}}">
+  <text>权限检查中...</text>
+</view>
+
+<!-- 未授权页面 -->
+<view class="unauthorized" wx:elif="{{!isAdmin}}">
+  <view class="unauthorized__icon">🔐</view>
+  <view class="unauthorized__title">未授权访问</view>
+  <view class="unauthorized__desc">
+    只有跑团管理员才能配置活动
+  </view>
+
+  <view class="unauthorized__card">
+    <view class="unauthorized__card-label">您的 openid：</view>
+    <view class="unauthorized__openid" bindtap="copyOpenid">{{myOpenid || '加载中...'}}</view>
+    <view class="unauthorized__hint">点击复制，发给群主</view>
+  </view>
+
+  <view class="unauthorized__steps">
+    <view class="unauthorized__step-title">如何成为管理员？</view>
+    <view class="unauthorized__step">1. 复制您的 openid</view>
+    <view class="unauthorized__step">2. 微信发给群主</view>
+    <view class="unauthorized__step">3. 群主在云开发控制台 → team 集合 → admins 字段里加上您的 openid</view>
+    <view class="unauthorized__step">4. 重新进入此页面即可</view>
+  </view>
+
+  <view class="unauthorized__back" bindtap="onBackHome">返回主页</view>
+</view>
+
+<!-- 正常配置页（admin） -->
+<view class="container" wx:else>
+  <!-- ============== 添加新活动 section ============== -->
+  <view class="form-card">
+    <view class="section-title" bindtap="toggleAddForm">
+      <text>➕ 添加新活动</text>
+      <text class="toggle-icon">{{showAddForm ? '▲' : '▼'}}</text>
+    </view>
+
+    <block wx:if="{{showAddForm}}">
+      <!-- 日期 -->
+      <view class="form-row">
+        <view class="form-label">📅 日期</view>
+        <picker mode="date" value="{{form.date}}" bindchange="onDateChange" start="2024-01-01" end="2030-12-31">
+          <view class="form-value {{form.date ? '' : 'form-value--placeholder'}}">
+            {{form.date || '选择日期'}}
+          </view>
+        </picker>
+      </view>
+
+      <!-- 时间 -->
+      <view class="form-row">
+        <view class="form-label">🕐 集合时间</view>
+        <picker mode="time" value="{{form.time}}" bindchange="onTimeChange">
+          <view class="form-value {{form.time ? '' : 'form-value--placeholder'}}">
+            {{form.time || '选择时间'}}
+          </view>
+        </picker>
+      </view>
+
+      <!-- 集合点 -->
+      <view class="form-row form-row--column">
+        <view class="form-label">📍 集合点（必填）</view>
+        <input
+          class="form-input"
+          placeholder="输入地点名称（联想）"
+          value="{{form.meetName}}"
+          bindinput="onMeetNameInput"
+        />
+        <view class="suggestions" wx:if="{{meetSuggestions.length > 0}}">
+          <view
+            class="suggestions__item"
+            wx:for="{{meetSuggestions}}"
+            wx:key="name"
+            bindtap="onPickMeet"
+            data-name="{{item.name}}"
+            data-address="{{item.address}}"
+            data-location="{{item.location}}">
+            <view class="suggestions__name">{{item.name}}</view>
+            <view class="suggestions__addr">{{item.address}}</view>
+          </view>
+        </view>
+        <input
+          class="form-input form-input--sub"
+          placeholder="详细地址（可选，会覆盖联想）"
+          value="{{form.meetAddress}}"
+          bindinput="onMeetAddressInput"
+        />
+      </view>
+
+      <!-- 星巴克 -->
+      <view class="form-row form-row--column">
+        <view class="form-label">☕ 跑完星巴克（可选）</view>
+        <input
+          class="form-input"
+          placeholder="输入星巴克名称（联想）"
+          value="{{form.sbuxName}}"
+          bindinput="onSbuxNameInput"
+        />
+        <view class="suggestions" wx:if="{{sbuxSuggestions.length > 0}}">
+          <view
+            class="suggestions__item"
+            wx:for="{{sbuxSuggestions}}"
+            wx:key="name"
+            bindtap="onPickSbux"
+            data-name="{{item.name}}"
+            data-address="{{item.address}}"
+            data-location="{{item.location}}">
+            <view class="suggestions__name">{{item.name}}</view>
+            <view class="suggestions__addr">{{item.address}}</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 路线 -->
+      <view class="form-row">
+        <view class="form-label">🗺️ 路线</view>
+        <input
+          class="form-input"
+          placeholder="如：徐汇滨江绿地"
+          value="{{form.route}}"
+          bindinput="onRouteInput"
+        />
+      </view>
+
+      <!-- 备注 -->
+      <view class="form-row">
+        <view class="form-label">📌 备注</view>
+        <input
+          class="form-input"
+          placeholder="如：穿跑团服装"
+          value="{{form.note}}"
+          bindinput="onNoteInput"
+        />
+      </view>
+
+      <!-- 🆕 确认添加按钮（放在表单内，删除 section 之上） -->
+      <view class="submit-block" wx:if="{{showAddForm}}">
+        <button
+          class="submit-btn"
+          bindtap="onSubmit"
+          disabled="{{submitting}}">
+          {{submitting ? '创建中...' : '✅ 确认添加'}}
+        </button>
+        <view class="submit-hint">活动会自动写入云数据库，主页立即显示</view>
+      </view>
+    </block>
+  </view>
+
+  <!-- ============== 删除现有活动 section ============== -->
+  <view class="form-card" style="margin-top: 24rpx;">
+    <view class="section-title">
+      <text>🗑️ 删除现有活动</text>
+      <text class="section-title__hint">长按删除</text>
+    </view>
+
+    <view wx:if="{{events.length === 0}}" class="empty-tip">
+      <text>暂无活动</text>
+    </view>
+
+    <view wx:else class="event-list">
+      <view
+        wx:for="{{events}}"
+        wx:key="id"
+        class="event-list__item"
+        bindtap="onDeleteEvent"
+        data-id="{{item.id}}"
+        data-name="{{item.title || item.meet.name}}"
+        data-count="{{item.photos ? item.photos.length : 0}}"
+        hover-class="event-list__item--hover">
+        <view class="event-list__date">
+          <text class="event-list__month">{{item._date.m}}月</text>
+          <text class="event-list__day">{{item._date.day}}</text>
+          <text class="event-list__weekday">{{item._date.weekday}}</text>
+        </view>
+        <view class="event-list__info">
+          <view class="event-list__title">{{item.title || item.meet.name}}</view>
+          <view class="event-list__meta">
+            <text>{{item.time}}</text>
+            <text wx:if="{{item.photos && item.photos.length > 0}}">📷 {{item.photos.length}} 张</text>
+          </view>
+        </view>
+        <view class="event-list__delete">删除</view>
+      </view>
+    </view>
+  </view>
+</view>
