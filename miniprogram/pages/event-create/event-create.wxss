@@ -250,6 +250,64 @@
   padding: 24rpx 0 8rpx;
 }
 
+/* ============== 活动状态选项 ============== */
+
+.status-options {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 8rpx;
+}
+
+.status-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  background: #f8f9fa;
+  border: 2rpx solid #e8eaed;
+  border-radius: 16rpx;
+  transition: all 0.2s;
+}
+
+.status-option--active {
+  background: linear-gradient(135deg, #faebe9 0%, #fff 100%);
+  border-color: #c74634;
+  box-shadow: 0 2rpx 8rpx rgba(199, 70, 52, 0.15);
+}
+
+.status-option__emoji {
+  font-size: 36rpx;
+  margin-bottom: 6rpx;
+}
+
+.status-option__label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 2rpx;
+}
+
+.status-option__desc {
+  font-size: 20rpx;
+  color: #5f6368;
+  text-align: center;
+}
+
+.status-option--active .status-option__label {
+  color: #c74634;
+}
+
+.status-hint {
+  margin-top: 16rpx;
+  padding: 12rpx 16rpx;
+  background: rgba(199, 70, 52, 0.06);
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  color: #c74634;
+  line-height: 1.5;
+}
+
 .submit-btn {
   width: 100%;
   height: 88rpx;

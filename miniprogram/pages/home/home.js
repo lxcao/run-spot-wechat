@@ -49,12 +49,13 @@ Page({
   },
 
   renderData(team, events) {
+    // 🆕 用 Date 对象比较，不用 localeCompare（字符串比较跨月会出错）
     const upcoming = events
       .filter((e) => e._status === 'upcoming')
-      .sort((a, b) => a.date.localeCompare(b.date));
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
     const past = events
       .filter((e) => e._status === 'past')
-      .sort((a, b) => b.date.localeCompare(a.date));
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // 给历史活动添加 weather emoji 字段
     past.forEach((e) => (e._weatherEmoji = e.weather ? weatherEmoji(e.weather) : ''));

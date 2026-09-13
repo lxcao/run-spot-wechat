@@ -16,6 +16,7 @@ Page({
       sbuxLat: null,
       route: '',
       note: '',
+      status: 'auto',  // auto | upcoming | past
     },
     meetSuggestions: [],
     sbuxSuggestions: [],
@@ -118,6 +119,11 @@ Page({
     this.setData({ 'form.note': e.detail.value });
   },
 
+  // 活动状态选择
+  onStatusChange(e) {
+    this.setData({ 'form.status': e.currentTarget.dataset.value });
+  },
+
   // 切换"添加"折叠
   toggleAddForm() {
     this.setData({ showAddForm: !this.data.showAddForm });
@@ -213,10 +219,8 @@ Page({
     if (!form.time) return wx.showToast({ title: '请选择时间', icon: 'none' });
     if (!form.meetName) return wx.showToast({ title: '请填写集合点', icon: 'none' });
 
-    const todayISO = new Date().toISOString().slice(0, 10);
-    if (form.date < todayISO) {
-      return wx.showToast({ title: '日期不能是过去', icon: 'none' });
-    }
+    // 🆕 不再校验日期是否过去（支持历史活动）
+    // 日期合法性由云函数 createEvent 内部判断
 
     this.setData({ submitting: true });
     wx.showLoading({ title: '创建中...' });
@@ -243,6 +247,7 @@ Page({
             : null,
           route: form.route,
           note: form.note,
+          status: form.status === 'auto' ? undefined : form.status,
         },
       });
 

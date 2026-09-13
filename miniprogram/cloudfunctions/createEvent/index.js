@@ -78,10 +78,13 @@ exports.main = async (event, context) => {
     return { code: -1, msg: '请填写集合点' };
   }
 
+  // 允许过去日期（用于添加历史活动）
   const todayISO = new Date().toISOString().slice(0, 10);
-  if (date < todayISO) {
-    return { code: -1, msg: '日期不能是过去' };
-  }
+  // 智能判断 status（如果用户没指定）：
+  // - 日期 >= 今天 → upcoming
+  // - 日期 < 今天 → past
+  const autoStatus = date >= todayISO ? 'upcoming' : 'past';
+  const finalStatus = (status === 'upcoming' || status === 'past') ? status : autoStatus;
 
   const id = generateId(date);
   const existing = await db.collection('events').where({ id }).limit(1).get();
@@ -134,7 +137,7 @@ exports.main = async (event, context) => {
       date,
       weekday: calcWeekday(date),
       time,
-      status: status || 'upcoming',
+      status: finalStatus,
       meet: {
         name: meetObj.name,
         address: meetObj.address,

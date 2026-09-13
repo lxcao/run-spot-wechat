@@ -41,7 +41,7 @@
       <!-- 日期 -->
       <view class="form-row">
         <view class="form-label">📅 日期</view>
-        <picker mode="date" value="{{form.date}}" bindchange="onDateChange" start="2024-01-01" end="2030-12-31">
+        <picker mode="date" value="{{form.date}}" bindchange="onDateChange" start="2020-01-01" end="2030-12-31">
           <view class="form-value {{form.date ? '' : 'form-value--placeholder'}}">
             {{form.date || '选择日期'}}
           </view>
@@ -56,6 +56,40 @@
             {{form.time || '选择时间'}}
           </view>
         </picker>
+      </view>
+
+      <!-- 活动状态 -->
+      <view class="form-row form-row--column">
+        <view class="form-label">📌 活动状态</view>
+        <view class="status-options">
+          <view
+            class="status-option {{form.status === 'auto' ? 'status-option--active' : ''}}"
+            data-value="auto"
+            bindtap="onStatusChange">
+            <text class="status-option__emoji">🤖</text>
+            <text class="status-option__label">自动</text>
+            <text class="status-option__desc">根据日期判断</text>
+          </view>
+          <view
+            class="status-option {{form.status === 'upcoming' ? 'status-option--active' : ''}}"
+            data-value="upcoming"
+            bindtap="onStatusChange">
+            <text class="status-option__emoji">🏃</text>
+            <text class="status-option__label">即将</text>
+            <text class="status-option__desc">未来活动</text>
+          </view>
+          <view
+            class="status-option {{form.status === 'past' ? 'status-option--active' : ''}}"
+            data-value="past"
+            bindtap="onStatusChange">
+            <text class="status-option__emoji">📚</text>
+            <text class="status-option__label">历史</text>
+            <text class="status-option__desc">补录过去的</text>
+          </view>
+        </view>
+        <view class="status-hint" wx:if="{{form.status === 'past'}}">
+          📚 正在补录历史活动。提交后到详情页逐张上传照片即可。
+        </view>
       </view>
 
       <!-- 集合点 -->
