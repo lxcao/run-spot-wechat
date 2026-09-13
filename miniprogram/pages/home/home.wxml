@@ -1,0 +1,170 @@
+<view class="container">
+  <!-- 品牌头（大 banner 样式，参考锡山马拉松） -->
+  <view class="brand-header" wx:if="{{team}}">
+    <!-- 顶部小标签：城市 -->
+    <view class="brand-header__top">
+      <view class="city-tag">📍 {{team.city || '上海'}}</view>
+    </view>
+
+    <!-- 大标题区：跑团集体 + 跑团名 + slogan -->
+    <view class="brand-header__hero">
+      <view class="brand-emoji-row">
+        <text class="brand-emoji">🏃‍♂️</text>
+        <text class="brand-emoji">🏃‍♀️</text>
+        <text class="brand-emoji">🏃</text>
+        <text class="brand-emoji">🏃‍♀️</text>
+        <text class="brand-emoji">🏃‍♂️</text>
+      </view>
+      <view class="brand-name">{{team.name}}</view>
+      <view class="brand-slogan">{{team.slogan}}</view>
+    </view>
+
+    <!-- 集合信息徽章（仿"鸣枪开跑"样式） -->
+    <view class="brand-header__meet" wx:if="{{team.default_meet_msg}}">
+      <text class="brand-meet-icon">🏃</text>
+      <text class="brand-meet-text">{{team.default_meet_msg}}</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 本周集合 hero -->
+  <view class="section" wx:if="{{hero}}">
+    <view class="section-title">
+      <text>本周集合</text>
+      <text class="count">{{hero._date.weekday}} {{hero._date.m}}/{{hero._date.day}}</text>
+    </view>
+    <view class="up-card" bindtap="onEventTap" data-id="{{hero.id}}">
+      <view class="up-card__badge">{{hero._isToday ? '今天' : '本周'}}</view>
+      <view class="up-card__title">{{hero.title || hero.meet.name}}</view>
+      <view class="up-card__when">
+        <text class="up-card__weekday">{{hero._date.weekday}}</text>
+        <text>{{hero._date.m}}月{{hero._date.day}}日 · {{hero.time || '07:00'}}</text>
+      </view>
+      <view class="up-card__row">
+        <text class="up-card__icon">📍</text>
+        <view class="up-card__col">
+          <view class="up-card__name">{{hero.meet.name}}</view>
+          <view class="up-card__addr">{{hero.meet.address || ''}}</view>
+        </view>
+      </view>
+      <view class="up-card__row" wx:if="{{hero.starbucks && hero.starbucks.name}}">
+        <text class="up-card__icon">☕</text>
+        <view class="up-card__col">
+          <view class="up-card__name">{{hero.starbucks.name}}</view>
+          <view class="up-card__addr">跑完在这里吃早饭</view>
+        </view>
+      </view>
+      <view class="up-card__row" wx:if="{{hero.route}}">
+        <text class="up-card__icon">🗺️</text>
+        <view class="up-card__col">
+          <view class="up-card__name">路线</view>
+          <view class="up-card__addr">{{hero.route}}</view>
+        </view>
+      </view>
+      <view class="up-card__note" wx:if="{{hero.note}}">📌 {{hero.note}}</view>
+      <view class="up-card__cta">
+        <view class="up-card__btn">📍 看地图导航</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 本周末天气 -->
+  <view class="section" wx:if="{{weekendWeather.available}}">
+    <view class="section-title">
+      <text>本周末天气</text>
+      <text class="count">{{weekendWeather.sat.date}} {{weekendWeather.sat.label}} / {{weekendWeather.sun.label}}</text>
+    </view>
+    <view class="weather-card">
+      <view class="weather-card__col" wx:if="{{weekendWeather.sat}}">
+        <view class="weather-card__day">{{weekendWeather.sat.label}}</view>
+        <view class="weather-card__date">{{weekendWeather.sat._date}}</view>
+        <view class="weather-card__emoji">{{weekendWeather.sat.emoji}}</view>
+        <view class="weather-card__weather">{{weekendWeather.sat.weather}}</view>
+        <view class="weather-card__temp">{{weekendWeather.sat.dayTemp}}° ~ {{weekendWeather.sat.nightTemp}}°</view>
+        <view class="weather-card__wind">{{weekendWeather.sat.wind}}</view>
+      </view>
+      <view class="weather-card__divider" wx:if="{{weekendWeather.sat && weekendWeather.sun}}"></view>
+      <view class="weather-card__col" wx:if="{{weekendWeather.sun}}">
+        <view class="weather-card__day">{{weekendWeather.sun.label}}</view>
+        <view class="weather-card__date">{{weekendWeather.sun._date}}</view>
+        <view class="weather-card__emoji">{{weekendWeather.sun.emoji}}</view>
+        <view class="weather-card__weather">{{weekendWeather.sun.weather}}</view>
+        <view class="weather-card__temp">{{weekendWeather.sun.dayTemp}}° ~ {{weekendWeather.sun.nightTemp}}°</view>
+        <view class="weather-card__wind">{{weekendWeather.sun.wind}}</view>
+      </view>
+    </view>
+    <view class="weather-card__tip">⚠️ 天气仅供参考，跑步前请实时确认</view>
+  </view>
+
+  <!-- 后续活动 -->
+  <view class="section" wx:if="{{upcomingList.length > 0}}">
+    <view class="section-title">
+      <text>后续活动</text>
+      <text class="count">{{upcomingList.length}} 场</text>
+    </view>
+    <view class="history-list">
+      <view
+        class="history-card"
+        wx:for="{{upcomingList}}"
+        wx:key="id"
+        bindtap="onEventTap"
+        data-id="{{item.id}}">
+        <view class="history-card__date">
+          <view class="history-card__month">{{item._date.m}}月</view>
+          <view class="history-card__day">{{item._date.day}}</view>
+          <view class="history-card__weekday">{{item._date.weekday}}</view>
+        </view>
+        <view class="history-card__info">
+          <view class="history-card__title">{{item.title || item.meet.name}}</view>
+          <view class="history-card__meta">
+            <text class="history-card__stat">🕐 {{item.time || '07:00'}}</text>
+            <text class="history-card__stat">📍 {{item.meet.name}}</text>
+          </view>
+        </view>
+        <view class="history-card__arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史活动 -->
+  <view class="section">
+    <view class="section-title">
+      <text>历史活动</text>
+      <text class="count">共 {{historyList.length}} 场</text>
+    </view>
+    <view wx:if="{{historyList.length > 0}}" class="history-list">
+      <view
+        class="history-card"
+        wx:for="{{historyList}}"
+        wx:key="id"
+        bindtap="onEventTap"
+        data-id="{{item.id}}">
+        <view class="history-card__date">
+          <view class="history-card__month">{{item._date.m}}月</view>
+          <view class="history-card__day">{{item._date.day}}</view>
+          <view class="history-card__weekday">{{item._date.weekday}}</view>
+        </view>
+        <view class="history-card__info">
+          <view class="history-card__title">{{item.title || item.meet.name}}</view>
+          <view class="history-card__meta">
+            <text class="history-card__stat">🕐 {{item.time || '07:00'}}</text>
+            <text class="history-card__stat">📍 {{item.meet.name}}</text>
+            <text class="history-card__stat" wx:if="{{item.attendees}}">👥 {{item.attendees}} 人</text>
+            <text class="history-card__stat" wx:if="{{item.weather}}">{{item._weatherEmoji}} {{item.weather}}</text>
+          </view>
+        </view>
+        <view class="history-card__arrow">›</view>
+      </view>
+    </view>
+    <view wx:else class="empty">还没有历史活动</view>
+  </view>
+
+  <view class="footer" wx:if="{{team}}">
+    <view>{{team.name}}</view>
+    <view>{{team.slogan}} ☕</view>
+  </view>
+</view>

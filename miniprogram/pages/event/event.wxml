@@ -1,0 +1,111 @@
+<view class="container" wx:if="{{event}}">
+  <!-- 顶部品牌头（仿锡山马拉松大 banner） -->
+  <view class="event-header" wx:if="{{team && team.name}}">
+    <view class="event-header__top">
+      <view class="event-header__logo">
+        <view class="event-header__emoji-row">
+          <text class="event-header__emoji">🏃‍♂️</text>
+          <text class="event-header__emoji">🏃‍♀️</text>
+          <text class="event-header__emoji">🏃</text>
+        </view>
+        <view>
+          <view class="event-header__brand-name">{{team.name}}</view>
+          <view class="event-header__brand-slogan">{{team.slogan}}</view>
+        </view>
+      </view>
+      <view class="event-header__meet" wx:if="{{team.default_meet_msg}}">
+        <text class="event-header__meet-icon">🏃</text>
+        <text class="event-header__meet-text">{{team.default_meet_msg}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主体大标题（仿锡山马拉松） -->
+  <view class="event-hero">
+    <view class="event-hero__date-badge">
+      <text class="event-hero__date-icon">📅</text>
+      <text class="event-hero__date-text">{{event._date.y}}/{{event._date.m}}/{{event._date.day}} {{event._date.weekday}} · {{event.time || '07:00'}}</text>
+    </view>
+    <view class="event-hero__title">{{event.title || event.meet.name}}</view>
+    <view class="event-hero__subtitle" wx:if="{{event.route}}">🗺️ {{event.route}}</view>
+    <view class="event-hero__badge {{event._status === 'upcoming' ? 'upcoming' : 'past'}}">
+      {{event._status === 'upcoming' ? (event._isToday ? '今天集合' : '即将开始') : '历史活动'}}
+    </view>
+  </view>
+
+  <!-- 信息卡 -->
+  <view class="detail-card card">
+    <view class="info-row">
+      <view class="info-row__icon info-row__icon--meet">📍</view>
+      <view class="info-row__body">
+        <view class="info-row__label">集合点</view>
+        <view class="info-row__value">{{event.meet.name}}</view>
+        <view class="info-row__sub">{{event.meet.address || ''}}</view>
+      </view>
+    </view>
+
+    <view class="info-row" wx:if="{{event.starbucks && event.starbucks.name}}">
+      <view class="info-row__icon info-row__icon--sbux">☕</view>
+      <view class="info-row__body">
+        <view class="info-row__label">跑完星巴克</view>
+        <view class="info-row__value">{{event.starbucks.name}}</view>
+        <view class="info-row__sub">{{event.starbucks.address || ''}}</view>
+      </view>
+    </view>
+
+    <block wx:if="{{event.attendees || event.weather}}">
+      <view class="info-row">
+        <view class="info-row__icon">📊</view>
+        <view class="info-row__body">
+          <view class="info-row__label">现场记录</view>
+          <view class="info-row__value">
+            <text wx:if="{{event.attendees}}">👥 {{event.attendees}} 人到场</text>
+            <text wx:if="{{event.attendees && event.weather}}"> · </text>
+            <text wx:if="{{event.weather}}">{{event._weatherEmoji}} {{event.weather}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="detail-card__note" wx:if="{{event.note}}">📌 {{event.note}}</view>
+  </view>
+
+  <!-- 地图 -->
+  <view class="map-section" wx:if="{{hasMap}}">
+    <view class="map-section__title">📍 集合点位置</view>
+    <view class="map-wrap">
+      <map
+        id="event-map"
+        style="width: 100%; height: 400rpx;"
+        latitude="{{center.lat}}"
+        longitude="{{center.lng}}"
+        markers="{{markers}}"
+        scale="{{scale}}"
+        bindmarkertap="onMarkerTap"
+      />
+    </view>
+  </view>
+
+  <view class="empty" wx:else>📍 暂无地图数据</view>
+
+  <!-- footer padding 给底部固定按钮留空间 -->
+  <view class="footer" wx:if="{{team}}">
+    <view>{{team.name}}</view>
+    <view>{{team.slogan}} ☕</view>
+  </view>
+  <view class="footer-spacer"></view>
+
+  <!-- 底部固定操作栏（仿锡山马拉松"立即报名"） -->
+  <view class="bottom-bar" wx:if="{{event._status === 'upcoming'}}">
+    <view class="bottom-bar__action" bindtap="onShareTap">
+      <text class="bottom-bar__icon">📤</text>
+      <text class="bottom-bar__label">分享</text>
+    </view>
+    <view class="bottom-bar__primary" bindtap="onNavMeet">
+      <text>📍 立即导航到集合点</text>
+    </view>
+  </view>
+</view>
+
+<view class="loading" wx:elif="{{loading}}">加载中...</view>
+<view class="empty" wx:else>活动不存在</view>

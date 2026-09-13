@@ -32,3 +32,7 @@ dist/
 # 临时文件
 /tmp/
 *.tmp
+
+# 微信开发者工具自动生成（个人本地配置）
+miniprogram/project.private.config.json
+miniprogram/.miniprogram/

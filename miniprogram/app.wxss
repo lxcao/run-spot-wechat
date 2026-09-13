@@ -1,0 +1,124 @@
+/* app.wxss · 全局样式 · 甲骨文红主题 */
+
+page {
+  --color-brand: #C74634;
+  --color-brand-dark: #A12B1A;
+  --color-brand-soft: #FAEBE9;
+  --color-sbux: #006241;
+  --color-sbux-soft: #E8F1ED;
+  --color-upcoming: #FF6A00;
+  --bg: #FAFAFA;
+  --bg-card: #FFFFFF;
+  --bg-soft: #F4F5F7;
+  --text: #1A1A1A;
+  --text-secondary: #5F6368;
+  --text-tertiary: #9AA0A6;
+  --divider: #E8EAED;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 30rpx;
+  line-height: 1.55;
+}
+
+/* 通用容器 */
+.container {
+  padding-bottom: 40rpx;
+}
+
+/* 品牌头 */
+.brand-header {
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-dark) 100%);
+  color: white;
+  padding: 56rpx 32rpx 48rpx;
+  border-bottom-left-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+}
+
+.brand-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 12rpx;
+}
+
+.brand-header .logo-emoji {
+  font-size: 56rpx;
+  line-height: 1;
+}
+
+.brand-header .brand-name {
+  font-size: 44rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+.brand-header .slogan {
+  font-size: 28rpx;
+  opacity: 0.92;
+  margin-top: 12rpx;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.brand-header .city-tag {
+  display: inline-block;
+  margin-top: 20rpx;
+  font-size: 22rpx;
+  padding: 6rpx 20rpx;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 100rpx;
+  letter-spacing: 2rpx;
+}
+
+/* 章节标题 */
+.section {
+  padding: 48rpx 32rpx 0;
+}
+
+.section-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 2rpx;
+  margin: 0 0 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.section-title::before {
+  content: "";
+  display: inline-block;
+  width: 6rpx;
+  height: 28rpx;
+  background: var(--color-brand);
+  border-radius: 4rpx;
+}
+
+.section-title .count {
+  margin-left: auto;
+  color: var(--text-tertiary);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 24rpx;
+}
+
+/* 通用卡片样式 */
+.card {
+  background: var(--bg-card);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.card + .card,
+.card + .history-list {
+  margin-top: 24rpx;
+}
+
+/* 底部留白 */
+.bottom-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
