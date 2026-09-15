@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>甲骨文魔都跑团 · 后台管理</title>
-  <!-- CloudBase Web SDK（网页端调云函数用） -->
-  <script src="https://imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.2/cloudbase.full.js"></script>
+  <title>甲骨文魔都跑团 · 后台说明</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -23,75 +21,74 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       padding: 40px 30px;
       width: 100%;
-      max-width: 460px;
+      max-width: 480px;
     }
-    .logo { text-align: center; font-size: 56px; margin-bottom: 12px; }
-    h1 { text-align: center; color: #C74634; font-size: 22px; margin-bottom: 4px; }
-    .subtitle { text-align: center; color: #999; font-size: 13px; margin-bottom: 24px; }
-    .step {
-      background: #f8f9fa;
-      border-left: 3px solid #C74634;
-      padding: 12px 16px;
-      border-radius: 0 6px 6px 0;
-      margin-bottom: 14px;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #333;
-    }
-    .step strong { color: #C74634; }
-    .step code {
-      background: #fff;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-size: 12px;
-      border: 1px solid #ddd;
-      word-break: break-all;
-      font-family: monospace;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: monospace;
-      box-sizing: border-box;
-    }
-    input:focus { outline: none; border-color: #C74634; }
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #C74634 0%, #A12B1A 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 16px;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .msg {
-      margin-top: 14px;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 13px;
+    .logo { text-align: center; font-size: 64px; margin-bottom: 16px; }
+    h1 {
       text-align: center;
-      display: none;
+      color: #C74634;
+      font-size: 22px;
+      margin-bottom: 6px;
     }
-    .msg.error { display: block; background: #fee; color: #c33; }
-    .msg.success { display: block; background: #efe; color: #3a3; }
-    .info {
-      margin-top: 18px;
-      padding: 14px;
-      background: #FFF8F0;
-      border: 1px solid #FFE0B2;
-      border-radius: 6px;
+    .subtitle {
+      text-align: center;
+      color: #999;
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
+    .method {
+      background: #fafafa;
+      border: 2px solid #eee;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .method h3 {
+      color: #C74634;
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .method p { color: #555; font-size: 14px; line-height: 1.7; }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 12px;
       font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.alt { background: #FF9800; }
+    .steps {
+      background: #FFF8F0;
+      border-left: 3px solid #FF9800;
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 12px 0;
+      font-size: 13px;
+      line-height: 1.8;
       color: #663300;
-      line-height: 1.7;
+    }
+    .steps strong { color: #FF9800; }
+    .qr-tip {
+      background: #E8F5E9;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      color: #2E7D32;
+      font-size: 14px;
+    }
+    .footer {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
     }
   </style>
 </head>
@@ -101,131 +98,46 @@
     <h1>甲骨文魔都跑团</h1>
     <p class="subtitle">后台管理系统</p>
 
-    <div class="info">
-      🆕 <strong>网页版后台</strong>：浏览器自动生成一个<strong>匿名 ID</strong>，群主只需把这个 ID 加到 <code>team.admins</code>，你就能永久登录。
+    <div class="method">
+      <h3>📱 方式 1：小程序后台 <span class="badge">推荐</span></h3>
+      <p>在你的微信里打开"甲骨文魔都跑团"小程序 → 入口在右上角 <strong>⚙️ 配置</strong>。</p>
+      <div class="steps">
+        <strong>可做：</strong><br>
+        ✅ 添加新活动（含高德地址联想）<br>
+        ✅ 删除活动（含照片清理）<br>
+        ✅ 上传活动照片<br>
+        ✅ 补录历史活动<br>
+        ✅ 查看所有活动/照片<br>
+        ❌ 不需要任何额外配置
+      </div>
     </div>
 
-    <div class="step">
-      <strong>首次登录步骤：</strong><br>
-      ① 点下方"获取匿名 ID 并登录" → 复制自动生成的 ID<br>
-      ② 微信发给群主 → 群主在云开发控制台 → <code>team.admins</code> 加你的 ID<br>
-      ③ 刷新本页 → 再点登录 → ✅ 永久免登录
+    <div class="method">
+      <h3>🖥️ 方式 2：网页后台 <span class="badge alt">暂缓</span></h3>
+      <p>CloudBase Web SDK 因网络限制暂未在网页端加载。</p>
+      <div class="steps">
+        <strong>原因：</strong><br>
+        • npm 全局权限问题（无法 npm install）<br>
+        • jsDelivr / unpkg / imgcache.qq.com 都访问失败<br>
+        • 静态托管屏蔽了外部 CDN<br>
+        <br>
+        <strong>解决路径：</strong><br>
+        • 升级到企业版（个人版 HTTP 触发器受限）<br>
+        • 或等网络环境修复后重试<br>
+        • 或用 tcb CLI（但 npm 装不上）<br>
+      </div>
     </div>
 
-    <button class="btn" id="loginBtn" onclick="login()">🚀 获取匿名 ID 并登录</button>
+    <div class="qr-tip">
+      💡 <strong>建议</strong>：跑团规模 100 跑友、每月几次活动<br>
+       用小程序后台已经 <strong>完全够用</strong>！<br>
+       等跑团规模大了（&gt;500 跑友），再升级企业版做完整网页后台。
+    </div>
 
-    <div class="msg" id="msg"></div>
-
-    <div id="uidBox" style="display:none; margin-top: 18px;">
-      <div style="font-size: 13px; color: #5f6368; margin-bottom: 6px;">你的匿名 ID（点击复制）：</div>
-      <div id="uidText" onclick="copyUid()" style="
-        padding: 12px;
-        background: #fff5e1;
-        border: 2px dashed #C74634;
-        border-radius: 6px;
-        font-family: monospace;
-        font-size: 12px;
-        cursor: pointer;
-        word-break: break-all;
-        color: #C74634;
-      "></div>
+    <div class="footer">
+      v5 后台管理系统 · admin/ 目录<br>
+      当前是过渡页面，等 SDK 问题解决后再启用
     </div>
   </div>
-
-  <script>
-    // ============== CloudBase Web SDK 初始化 ==============
-    const ENV_ID = 'run-spot-prod-d1gb2jd1j3ce2e7fb';
-    const REGION = 'ap-shanghai';
-
-    let app = null;
-    let currentUid = '';
-
-    async function getApp() {
-      if (app) return app;
-      if (!window.cloudbase) {
-        throw new Error('CloudBase SDK 未加载，请检查网络');
-      }
-      app = window.cloudbase.init({ env: ENV_ID, region: REGION });
-      return app;
-    }
-
-    // 自动匿名登录（如果还没登录）
-    async function ensureLogin() {
-      const a = await getApp();
-      const auth = a.auth();
-      if (!auth.hasLoginState()) {
-        await auth.signInAnonymously();
-      }
-      const user = auth.currentUser;
-      if (!user) {
-        await auth.signInAnonymously();
-      }
-      currentUid = (auth.currentUser && auth.currentUser.uid) || '';
-      if (!currentUid) {
-        throw new Error('匿名登录失败，没拿到 uid');
-      }
-      // 显示在页面上
-      document.getElementById('uidText').textContent = currentUid;
-      document.getElementById('uidBox').style.display = 'block';
-      return currentUid;
-    }
-
-    // 调云函数
-    async function callFn(name, data) {
-      const a = await getApp();
-      const res = await a.callFunction({ name, data });
-      return res.result;
-    }
-
-    function copyUid() {
-      if (!currentUid) return;
-      navigator.clipboard.writeText(currentUid).then(() => {
-        alert('✅ 匿名 ID 已复制！\n\n发给群主，让群主加到 team.admins 列表');
-      });
-    }
-
-    async function login() {
-      const btn = document.getElementById('loginBtn');
-      const msgEl = document.getElementById('msg');
-      btn.disabled = true;
-      btn.textContent = '登录中...';
-      msgEl.className = 'msg';
-      msgEl.textContent = '';
-
-      try {
-        // 1. 匿名登录拿 uid
-        const uid = await ensureLogin();
-
-        // 2. 调 adminLogin 云函数（uid 当 openid 用）
-        const result = await callFn('adminLogin', { openid: uid });
-
-        if (result.code === 0) {
-          msgEl.className = 'msg success';
-          msgEl.textContent = `✅ 登录成功！欢迎，${result.data.teamName || '管理员'}`;
-
-          // 保存到 localStorage（避免每次重新登录）
-          localStorage.setItem('admin_uid', uid);
-          localStorage.setItem('admin_team', JSON.stringify(result.data));
-
-          // 1 秒后跳转
-          setTimeout(() => {
-            window.location.href = 'events.html';
-          }, 800);
-        } else {
-          msgEl.className = 'msg error';
-          msgEl.textContent = '❌ ' + (result.msg || '登录失败');
-          // 显示提示，让用户把 uid 发给群主
-          msgEl.textContent += '\n把上方的"匿名 ID"发给群主';
-        }
-      } catch (err) {
-        msgEl.className = 'msg error';
-        msgEl.textContent = '❌ ' + (err.message || '登录失败');
-        console.error(err);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '🚀 获取匿名 ID 并登录';
-      }
-    }
-  </script>
 </body>
 </html>
