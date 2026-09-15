@@ -1,0 +1,11 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "description": "> 跑团微信小程序 + H5 的后台管理 Web > > 部署在同一个 CloudBase 环境（`run-spot-prod`）",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "type": "commonjs"
+}

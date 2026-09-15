@@ -1,38 +1,30 @@
-// 云函数 adminDeleteEvent
-// 入参：{ id: '2026-09-19' }
-// 功能：删除活动 + 清理所有云存储照片 + 数据库记录
+// 云函数 adminDeleteEvent（普通云函数版）
+// 入参：{ openid, id }
+// 功能：删除活动 + 清理云存储所有照片 + 数据库记录
 
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
-
 const db = cloud.database();
 
-async function checkAdmin() {
-  const wxContext = cloud.getWXContext();
-  const openid = wxContext.OPENID;
+exports.main = async (event, context) => {
+  const { openid, id } = event || {};
+
+  if (!openid) return { code: -1, msg: '缺少 openid' };
+
+  // 权限校验
   const teamRes = await db.collection('team').where({ id: 'meta' }).limit(1).get();
   const admins = teamRes.data[0]?.admins || [];
-  return admins.includes(openid);
-}
+  if (!admins.includes(openid)) return { code: -1, msg: '未授权' };
 
-exports.main = async (event, context) => {
-  // 权限检查
-  if (!(await checkAdmin())) {
-    return { code: -1, msg: '未授权' };
-  }
-
-  const { id } = event || {};
-  if (!id) {
-    return { code: -1, msg: '缺少 id 参数' };
-  }
+  if (!id) return { code: -1, msg: '缺少 id 参数' };
 
   try {
     // 1. 查活动
-    const res = await db.collection('events').where({ id }).limit(1).get();
-    if (res.data.length === 0) {
+    const eventRes = await db.collection('events').where({ id }).limit(1).get();
+    if (eventRes.data.length === 0) {
       return { code: -1, msg: '活动不存在' };
     }
-    const e = res.data[0];
+    const e = eventRes.data[0];
 
     // 2. 删除云存储中的所有照片
     let deletedFiles = 0;
@@ -43,8 +35,8 @@ exports.main = async (event, context) => {
         if (deleteRes.fileList) {
           deletedFiles = deleteRes.fileList.filter((f) => f.status === 'success').length;
         }
-      } catch (e) {
-        console.warn('云存储照片删除失败，继续删除数据库', e);
+      } catch (err) {
+        console.warn('云存储照片删除失败，继续删除数据库', err);
       }
     }
 

@@ -1,7 +1,7 @@
-// 云函数 adminLogin
-// 支持两种调用方式：
-//   1. 小程序端 wx.cloud.callFunction('adminLogin') → 用 wx 上下文的 OPENID
-//   2. 网页端 HTTP POST /adminLogin → body 传 { openid: 'xxx' }
+// 云函数 adminLogin（普通云函数版）
+// 支持两种调用：
+//   1. 小程序端：wx.cloud.callFunction({ name: 'adminLogin', data: { openid } })
+//   2. 网页端：app.callFunction({ name: 'adminLogin', data: { openid } })
 
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
@@ -9,22 +9,23 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
 exports.main = async (event, context) => {
-  // 1. 优先用 wx 上下文的 OPENID
-  let openid = null;
+  // 优先用 wx 上下文的 OPENID（小程序端）
+  // 退而求其次用前端传入的 openid（网页端用 anonymous uid）
+  let openid = '';
   try {
     const wxContext = cloud.getWXContext();
-    if (wxContext.OPENID) openid = wxContext.OPENID;
+    if (wxContext && wxContext.OPENID) {
+      openid = wxContext.OPENID;
+    }
   } catch (e) {
-    // HTTP 触发时 getWXContext 可能报错，忽略
+    // 忽略错误
   }
-
-  // 2. 如果 wx 上下文没拿到 openid（HTTP 触发），从 event 取
   if (!openid && event && event.openid) {
     openid = event.openid;
   }
 
   if (!openid) {
-    return { code: -1, msg: '缺少 openid（小程序调用会自动获取，网页端需要传 openid）' };
+    return { code: -1, msg: '缺少 openid 参数' };
   }
 
   try {

@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>甲骨文魔都跑团 · 后台管理</title>
+  <!-- CloudBase Web SDK（网页端调云函数用） -->
+  <script src="https://imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.2/cloudbase.full.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -21,7 +23,7 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       padding: 40px 30px;
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
     }
     .logo { text-align: center; font-size: 56px; margin-bottom: 12px; }
     h1 { text-align: center; color: #C74634; font-size: 22px; margin-bottom: 4px; }
@@ -44,9 +46,8 @@
       font-size: 12px;
       border: 1px solid #ddd;
       word-break: break-all;
+      font-family: monospace;
     }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; }
     input {
       width: 100%;
       padding: 12px;
@@ -68,7 +69,7 @@
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 8px;
+      margin-top: 16px;
     }
     .btn:active { transform: scale(0.98); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -82,6 +83,16 @@
     }
     .msg.error { display: block; background: #fee; color: #c33; }
     .msg.success { display: block; background: #efe; color: #3a3; }
+    .info {
+      margin-top: 18px;
+      padding: 14px;
+      background: #FFF8F0;
+      border: 1px solid #FFE0B2;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #663300;
+      line-height: 1.7;
+    }
   </style>
 </head>
 <body>
@@ -90,89 +101,131 @@
     <h1>甲骨文魔都跑团</h1>
     <p class="subtitle">后台管理系统</p>
 
-    <div class="step">
-      <strong>📱 第 1 步：</strong> 打开微信，搜索"甲骨文魔都跑团"小程序 → 进入后点 <strong>⚙️ 配置</strong> → 看到"未授权"页面 → <strong>点击您的 openid 复制</strong>（按钮会自动复制到剪贴板）→ <strong>微信发给自己</strong>
-    </div>
-    <div class="step">
-      <strong>🔑 第 2 步：</strong> 把上一步复制的 openid 粘到下面 → 点"登录"
+    <div class="info">
+      🆕 <strong>网页版后台</strong>：浏览器自动生成一个<strong>匿名 ID</strong>，群主只需把这个 ID 加到 <code>team.admins</code>，你就能永久登录。
     </div>
 
-    <div class="form-group">
-      <label>您的 openid</label>
-      <input
-        type="text"
-        id="openidInput"
-        placeholder="oXxxXxxXxxXxxXxxXxxX（类似这种）"
-        autocomplete="off" />
+    <div class="step">
+      <strong>首次登录步骤：</strong><br>
+      ① 点下方"获取匿名 ID 并登录" → 复制自动生成的 ID<br>
+      ② 微信发给群主 → 群主在云开发控制台 → <code>team.admins</code> 加你的 ID<br>
+      ③ 刷新本页 → 再点登录 → ✅ 永久免登录
     </div>
 
-    <button class="btn" id="loginBtn" onclick="login()">登 录</button>
+    <button class="btn" id="loginBtn" onclick="login()">🚀 获取匿名 ID 并登录</button>
 
     <div class="msg" id="msg"></div>
+
+    <div id="uidBox" style="display:none; margin-top: 18px;">
+      <div style="font-size: 13px; color: #5f6368; margin-bottom: 6px;">你的匿名 ID（点击复制）：</div>
+      <div id="uidText" onclick="copyUid()" style="
+        padding: 12px;
+        background: #fff5e1;
+        border: 2px dashed #C74634;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 12px;
+        cursor: pointer;
+        word-break: break-all;
+        color: #C74634;
+      "></div>
+    </div>
   </div>
 
   <script>
+    // ============== CloudBase Web SDK 初始化 ==============
+    const ENV_ID = 'run-spot-prod-d1gb2jd1j3ce2e7fb';
+    const REGION = 'ap-shanghai';
+
+    let app = null;
+    let currentUid = '';
+
+    async function getApp() {
+      if (app) return app;
+      if (!window.cloudbase) {
+        throw new Error('CloudBase SDK 未加载，请检查网络');
+      }
+      app = window.cloudbase.init({ env: ENV_ID, region: REGION });
+      return app;
+    }
+
+    // 自动匿名登录（如果还没登录）
+    async function ensureLogin() {
+      const a = await getApp();
+      const auth = a.auth();
+      if (!auth.hasLoginState()) {
+        await auth.signInAnonymously();
+      }
+      const user = auth.currentUser;
+      if (!user) {
+        await auth.signInAnonymously();
+      }
+      currentUid = (auth.currentUser && auth.currentUser.uid) || '';
+      if (!currentUid) {
+        throw new Error('匿名登录失败，没拿到 uid');
+      }
+      // 显示在页面上
+      document.getElementById('uidText').textContent = currentUid;
+      document.getElementById('uidBox').style.display = 'block';
+      return currentUid;
+    }
+
+    // 调云函数
+    async function callFn(name, data) {
+      const a = await getApp();
+      const res = await a.callFunction({ name, data });
+      return res.result;
+    }
+
+    function copyUid() {
+      if (!currentUid) return;
+      navigator.clipboard.writeText(currentUid).then(() => {
+        alert('✅ 匿名 ID 已复制！\n\n发给群主，让群主加到 team.admins 列表');
+      });
+    }
+
     async function login() {
-      const openid = document.getElementById('openidInput').value.trim();
       const btn = document.getElementById('loginBtn');
       const msgEl = document.getElementById('msg');
-
-      if (!openid) {
-        msgEl.className = 'msg error';
-        msgEl.textContent = '❌ 请先粘贴您的 openid';
-        return;
-      }
-      if (!openid.startsWith('oX') || openid.length < 20) {
-        msgEl.className = 'msg error';
-        msgEl.textContent = '❌ openid 格式不对，应该以"o"开头，长度约 28 字符';
-        return;
-      }
-
       btn.disabled = true;
       btn.textContent = '登录中...';
       msgEl.className = 'msg';
+      msgEl.textContent = '';
 
       try {
-        // 调用 adminLogin 云函数（HTTP 触发器）
-        const res = await fetch('/adminLogin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ openid }),
-        });
+        // 1. 匿名登录拿 uid
+        const uid = await ensureLogin();
 
-        if (!res.ok) {
-          throw new Error('HTTP ' + res.status + '：可能还没在 CloudBase 配置 HTTP 触发器');
-        }
-
-        const result = await res.json();
+        // 2. 调 adminLogin 云函数（uid 当 openid 用）
+        const result = await callFn('adminLogin', { openid: uid });
 
         if (result.code === 0) {
           msgEl.className = 'msg success';
-          msgEl.textContent = '✅ 登录成功！欢迎，' + (result.data.teamName || '管理员');
-          // 保存 openid 到 sessionStorage
-          sessionStorage.setItem('admin_openid', openid);
-          sessionStorage.setItem('admin_team', JSON.stringify(result.data));
+          msgEl.textContent = `✅ 登录成功！欢迎，${result.data.teamName || '管理员'}`;
+
+          // 保存到 localStorage（避免每次重新登录）
+          localStorage.setItem('admin_uid', uid);
+          localStorage.setItem('admin_team', JSON.stringify(result.data));
+
           // 1 秒后跳转
           setTimeout(() => {
-            window.location.href = 'events.html?openid=' + encodeURIComponent(openid);
-          }, 1000);
+            window.location.href = 'events.html';
+          }, 800);
         } else {
           msgEl.className = 'msg error';
           msgEl.textContent = '❌ ' + (result.msg || '登录失败');
+          // 显示提示，让用户把 uid 发给群主
+          msgEl.textContent += '\n把上方的"匿名 ID"发给群主';
         }
       } catch (err) {
         msgEl.className = 'msg error';
-        msgEl.textContent = '❌ ' + (err.message || '网络错误');
+        msgEl.textContent = '❌ ' + (err.message || '登录失败');
+        console.error(err);
       } finally {
         btn.disabled = false;
-        btn.textContent = '登 录';
+        btn.textContent = '🚀 获取匿名 ID 并登录';
       }
     }
-
-    // 回车键提交
-    document.getElementById('openidInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') login();
-    });
   </script>
 </body>
 </html>

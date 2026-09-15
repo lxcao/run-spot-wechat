@@ -1,26 +1,23 @@
-// 云函数 adminGetStats
+// 云函数 adminGetStats（普通云函数版）
+// 入参：{ openid }
 // 返回：{ code: 0, data: { totalEvents, totalPhotos, totalAdmins, ... } }
 
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
-
 const db = cloud.database();
 
-async function checkAdmin() {
-  const wxContext = cloud.getWXContext();
-  const openid = wxContext.OPENID;
+exports.main = async (event, context) => {
+  const { openid } = event || {};
+
+  if (!openid) return { code: -1, msg: '缺少 openid' };
+
+  // 权限校验
   const teamRes = await db.collection('team').where({ id: 'meta' }).limit(1).get();
   const admins = teamRes.data[0]?.admins || [];
-  return admins.includes(openid);
-}
-
-exports.main = async (event, context) => {
-  if (!(await checkAdmin())) {
-    return { code: -1, msg: '未授权' };
-  }
+  if (!admins.includes(openid)) return { code: -1, msg: '未授权' };
 
   try {
-    // 1. 活动统计
+    // 活动统计
     const eventsRes = await db.collection('events').get();
     const events = eventsRes.data;
     const totalEvents = events.length;
@@ -28,17 +25,15 @@ exports.main = async (event, context) => {
     const pastEvents = events.filter((e) => e.status === 'past').length;
     const totalPhotos = events.reduce((sum, e) => sum + (e.photos?.length || 0), 0);
 
-    // 2. 跑团信息
-    const teamRes = await db.collection('team').where({ id: 'meta' }).limit(1).get();
+    // 跑团信息
     const team = teamRes.data[0] || {};
     const totalAdmins = (team.admins || []).length;
 
-    // 3. 最新活动
+    // 最新活动
     const sortedEvents = [...events].sort((a, b) =>
       (b.date || '').localeCompare(a.date || '')
     );
-    const latestEvent = sortedEvents[0] || null;
-    const latestEventDate = latestEvent?.date || null;
+    const latestEventDate = sortedEvents[0]?.date || null;
 
     return {
       code: 0,
