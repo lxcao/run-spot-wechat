@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>活动管理 · 甲骨文魔都跑团</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f5f7;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #C74634 0%, #A12B1A 100%);
+      color: white;
+      padding: 30rpx 20rpx 20rpx;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header h1 { font-size: 20px; font-weight: 700; }
+    .header p { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+    .header .back {
+      position: absolute;
+      left: 16rpx;
+      top: 24rpx;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .container { padding: 20rpx; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10rpx;
+      margin-bottom: 20rpx;
+    }
+    .stat-card {
+      background: white;
+      padding: 16rpx 8rpx;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .stat-card__num {
+      font-size: 20px;
+      font-weight: 700;
+      color: #C74634;
+    }
+    .stat-card__label {
+      font-size: 11px;
+      color: #999;
+      margin-top: 4px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 10rpx;
+      margin-bottom: 14rpx;
+    }
+    .toolbar button {
+      flex: 1;
+      padding: 10rpx;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .toolbar button.active {
+      background: #C74634;
+      color: white;
+      border-color: #C74634;
+    }
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12rpx;
+    }
+    .event-card {
+      background: white;
+      border-radius: 10rpx;
+      padding: 16rpx;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .event-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8rpx;
+    }
+    .event-card__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+      flex: 1;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 11px;
+      border-radius: 10px;
+      margin-left: 6rpx;
+    }
+    .badge.upcoming { background: #FFF3E0; color: #E65100; }
+    .badge.past { background: #E0E0E0; color: #666; }
+    .event-card__meta {
+      display: flex;
+      gap: 12rpx;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8rpx;
+    }
+    .event-card__meta span { display: inline-flex; align-items: center; gap: 2px; }
+    .event-card__route {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8rpx;
+    }
+    .event-card__notes {
+      font-size: 12px;
+      color: #888;
+      background: #f8f9fa;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin-bottom: 8rpx;
+    }
+    .event-card__actions {
+      display: flex;
+      gap: 8rpx;
+      margin-top: 10rpx;
+    }
+    .event-card__actions button {
+      flex: 1;
+      padding: 8rpx;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .event-card__actions button.danger {
+      border-color: #c33;
+      color: #c33;
+    }
+    .event-card__actions button.primary {
+      background: #C74634;
+      color: white;
+      border-color: #C74634;
+    }
+    .empty {
+      background: white;
+      border-radius: 10rpx;
+      padding: 60rpx 20rpx;
+      text-align: center;
+      color: #999;
+      font-size: 14px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12rpx 24rpx;
+      border-radius: 24rpx;
+      font-size: 14px;
+      z-index: 100;
+      display: none;
+    }
+    .toast.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a class="back" href="index.html">‹ 退出</a>
+    <h1>📅 活动管理</h1>
+    <p id="teamName">甲骨文魔都跑团</p>
+  </div>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-card__num" id="statTotal">--</div>
+        <div class="stat-card__label">总活动</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__num" id="statUpcoming">--</div>
+        <div class="stat-card__label">即将</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__num" id="statPast">--</div>
+        <div class="stat-card__label">历史</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__num" id="statPhotos">--</div>
+        <div class="stat-card__label">照片</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="active" data-filter="all" onclick="setFilter('all', this)">全部</button>
+      <button data-filter="upcoming" onclick="setFilter('upcoming', this)">即将</button>
+      <button data-filter="past" onclick="setFilter('past', this)">历史</button>
+      <button onclick="location.reload()">🔄 刷新</button>
+    </div>
+
+    <div class="event-list" id="eventList">
+      <div class="empty">加载中...</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const OPENID = params.get('openid') || sessionStorage.getItem('admin_openid') || '';
+    let currentFilter = 'all';
+    let allEvents = [];
+
+    // 拉取统计
+    async function loadStats() {
+      try {
+        const res = await fetch('/adminGetStats', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ openid: OPENID }),
+        });
+        const r = await res.json();
+        if (r.code === 0) {
+          document.getElementById('statTotal').textContent = r.data.totalEvents;
+          document.getElementById('statUpcoming').textContent = r.data.upcomingEvents;
+          document.getElementById('statPast').textContent = r.data.pastEvents;
+          document.getElementById('statPhotos').textContent = r.data.totalPhotos;
+          document.getElementById('teamName').textContent =
+            r.data.teamName + ' · ' + r.data.teamSlogan;
+        }
+      } catch (e) {
+        console.error('loadStats 失败', e);
+      }
+    }
+
+    // 拉取活动列表
+    async function loadEvents() {
+      try {
+        const res = await fetch('/adminListEvents', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ openid: OPENID, status: 'all' }),
+        });
+        const r = await res.json();
+        if (r.code === 0) {
+          allEvents = r.data.events;
+          renderEvents();
+        } else {
+          toast(r.msg || '加载失败', 'error');
+        }
+      } catch (e) {
+        toast('网络错误', 'error');
+        console.error(e);
+      }
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.toolbar button[data-filter]').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderEvents();
+    }
+
+    function renderEvents() {
+      const list = currentFilter === 'all'
+        ? allEvents
+        : allEvents.filter((e) => e.status === currentFilter);
+
+      const container = document.getElementById('eventList');
+      if (list.length === 0) {
+        container.innerHTML = '<div class="empty">暂无活动</div>';
+        return;
+      }
+
+      container.innerHTML = list.map((e) => {
+        const photoCount = (e.photos || []).length;
+        return `
+          <div class="event-card">
+            <div class="event-card__header">
+              <div class="event-card__title">
+                ${escapeHtml(e.title || e.meet?.name || '未命名')}
+                <span class="badge ${e.status}">${e.status === 'upcoming' ? '即将' : '历史'}</span>
+              </div>
+            </div>
+            <div class="event-card__meta">
+              <span>📅 ${e.date} ${e._date?.weekday || ''}</span>
+              <span>🕐 ${e.time || '07:00'}</span>
+              <span>📷 ${photoCount} 张</span>
+            </div>
+            <div class="event-card__route">
+              📍 ${escapeHtml(e.meet?.name || '')} → ${escapeHtml(e.route || '未填路线')}
+            </div>
+            ${e.note ? `<div class="event-card__notes">📌 ${escapeHtml(e.note)}</div>` : ''}
+            <div class="event-card__actions">
+              <button class="primary" onclick="viewPhotos('${e.id}')">📷 照片</button>
+              <button class="danger" onclick="deleteEvent('${e.id}', '${escapeHtml(e.title || e.meet?.name || '该活动')}')">🗑️ 删除</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
+      );
+    }
+
+    function toast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show';
+      t.style.background = type === 'error' ? 'rgba(200, 50, 50, 0.9)' : 'rgba(0,0,0,0.8)';
+      setTimeout(() => { t.className = 'toast'; }, 2500);
+    }
+
+    async function deleteEvent(id, name) {
+      if (!confirm(`确定要删除"${name}"吗？\n将同时删除该活动所有照片！`)) return;
+      try {
+        const res = await fetch('/adminDeleteEvent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ openid: OPENID, id }),
+        });
+        const r = await res.json();
+        if (r.code === 0) {
+          toast(`已删除（清理 ${r.data.deletedFiles} 张照片）`);
+          loadEvents();
+          loadStats();
+        } else {
+          toast(r.msg || '删除失败', 'error');
+        }
+      } catch (e) {
+        toast('网络错误', 'error');
+      }
+    }
+
+    function viewPhotos(id) {
+      // 后续实现：跳转到 photos.html?id=xxx
+      alert('照片管理页面开发中...\n活动 ID: ' + id);
+    }
+
+    // 初始化
+    if (!OPENID) {
+      alert('未检测到 openid，请重新登录');
+      location.href = 'index.html';
+    } else {
+      loadStats();
+      loadEvents();
+    }
+  </script>
+</body>
+</html>
