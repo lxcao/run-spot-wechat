@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>甲骨文魔都跑团 · 后台管理</title>
   <!-- CloudBase Web SDK（本地 567KB ESM 文件，自动挂载 window.cloudbase） -->
-  <script src="./cloudbase-esm.js"></script>
+  <script type="module" src="./cloudbase-esm.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -121,7 +121,7 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
     const ENV_ID = 'run-spot-prod-d1gb2jd1j3ce2e7fb';
 
     function showMsg(text, type) {
