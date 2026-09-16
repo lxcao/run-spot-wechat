@@ -32,3 +32,7 @@ export function annotateEventStatus<T extends { date: string; status?: string }>
         : 'past';
   return { ...event, _status };
 }
+
+export function isCreateRoute(pathname: string) {
+  return pathname.endsWith('/events/new') || pathname === '/events/new';
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { annotateEventStatus, splitEvents, checkWebAdmin } from './events';
+import { annotateEventStatus, splitEvents, checkWebAdmin, isCreateRoute } from './events';
 
 const events = [
   { id: '2026-09-26', date: '2026-09-26', _status: 'upcoming', title: 'A' },
@@ -40,5 +40,13 @@ describe('checkWebAdmin', () => {
   it('matches uid', () => {
     expect(checkWebAdmin({ webAdmins: ['u1'] }, 'u1')).toBe(true);
     expect(checkWebAdmin({ webAdmins: ['u1'] }, 'u2')).toBe(false);
+  });
+});
+
+describe('isCreateRoute', () => {
+  it('is true for /events/new and false for an event id', () => {
+    expect(isCreateRoute('/events/new')).toBe(true);
+    expect(isCreateRoute('#/events/new')).toBe(true);
+    expect(isCreateRoute('/events/2026-09-26')).toBe(false);
   });
 });

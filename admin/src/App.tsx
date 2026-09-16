@@ -3,6 +3,7 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { callFn } from './lib/api';
 import { readSession, readUid } from './lib/auth';
 import { checkWebAdmin } from './lib/events';
+import { EventFormPage } from './pages/EventFormPage';
 import { EventListPage } from './pages/EventListPage';
 import { LoginPage } from './pages/LoginPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
@@ -76,6 +77,8 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={<EventListPage />} />
+        <Route path="/events/new" element={<EventFormPage key="create" mode="create" />} />
+        <Route path="/events/:id" element={<EventFormPage mode="edit" />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
