@@ -17,7 +17,7 @@ exports.main = async (event) => {
   try {
     const { eventId, fileID } = event || {};
     if (typeof eventId !== 'string' || !eventId) return { code: -1, msg: '缺少 eventId' };
-    if (!fileID || !String(fileID).startsWith('cloud://')) {
+    if (typeof fileID !== 'string' || !fileID.startsWith('cloud://')) {
       return { code: -1, msg: 'fileID 不合法' };
     }
 
@@ -30,8 +30,9 @@ exports.main = async (event) => {
     const next = removePhoto(res.data[0].photos || [], fileID);
     if (!next) return { code: -1, msg: '照片不存在' };
 
+    const _ = db.command;
     await db.collection('events').where({ id: eventId }).update({
-      data: { photos: next },
+      data: { photos: _.pull({ fileID }) },
     });
 
     try {
