@@ -3,13 +3,10 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { callFn } from './lib/api';
 import { readSession, readUid } from './lib/auth';
 import { checkWebAdmin } from './lib/events';
+import { EventListPage } from './pages/EventListPage';
 import { LoginPage } from './pages/LoginPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
 import type { Team } from './types';
-
-function EventListPlaceholder() {
-  return <p>events</p>;
-}
 
 function ProtectedLayout() {
   const [state, setState] = useState<'loading' | 'anon' | 'denied' | 'ok' | 'error'>('loading');
@@ -78,8 +75,8 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedLayout />}>
-        <Route path="/" element={<EventListPlaceholder />} />
-        <Route path="*" element={<EventListPlaceholder />} />
+        <Route path="/" element={<EventListPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
