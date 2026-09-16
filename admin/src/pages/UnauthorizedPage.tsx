@@ -2,10 +2,17 @@ import { useState } from 'react';
 
 export function UnauthorizedPage({ uid }: { uid: string }) {
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState('');
 
   async function copyUid() {
-    await navigator.clipboard.writeText(uid);
-    setCopied(true);
+    setError('');
+    setCopied(false);
+    try {
+      await navigator.clipboard.writeText(uid);
+      setCopied(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '复制失败');
+    }
   }
 
   return (
@@ -18,6 +25,7 @@ export function UnauthorizedPage({ uid }: { uid: string }) {
           复制 uid
         </button>
         {copied ? <p>已复制</p> : null}
+        {error ? <p className="auth-error" role="alert">{error}</p> : null}
       </section>
     </main>
   );
