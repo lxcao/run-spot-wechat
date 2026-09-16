@@ -4,6 +4,7 @@
   "description": "添加活动照片到 events 集合",
   "main": "index.js",
   "dependencies": {
-    "wx-server-sdk": "~2.6.3"
+    "wx-server-sdk": "~2.6.3",
+    "@cloudbase/node-sdk": "~3.10.0"
   }
 }
