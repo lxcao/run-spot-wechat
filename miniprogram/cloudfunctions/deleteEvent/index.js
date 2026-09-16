@@ -5,6 +5,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const db = cloud.database();
+const { assertAdmin } = require('./assertAdmin');
 
 exports.main = async (event, context) => {
   const { id } = event || {};
@@ -13,16 +14,9 @@ exports.main = async (event, context) => {
   }
 
   // 🔐 权限检查
-  try {
-    const wxContext = cloud.getWXContext();
-    const OPENID = wxContext.OPENID;
-    const teamRes = await db.collection('team').where({ id: 'meta' }).limit(1).get();
-    const admins = teamRes.data[0]?.admins || [];
-    if (!Array.isArray(admins) || !admins.includes(OPENID)) {
-      return { code: -1, msg: '未授权：请联系群主把你加入管理员列表' };
-    }
-  } catch (e) {
-    console.warn('权限检查异常', e);
+  const gate = await assertAdmin(cloud, db);
+  if (!gate.ok) {
+    return { code: gate.code, msg: gate.msg };
   }
 
   try {
