@@ -1,9 +1,10 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AddressSuggest, type AddressPlace } from '../components/AddressSuggest';
+import { PhotoGrid } from '../components/PhotoGrid';
 import { callFn } from '../lib/api';
 import { isCreateRoute } from '../lib/events';
-import type { EventItem } from '../types';
+import type { EventItem, Photo } from '../types';
 
 type Mode = 'create' | 'edit';
 type Status = 'auto' | 'upcoming' | 'past';
@@ -57,6 +58,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
   const [starbucks, setStarbucks] = useState<PlaceFields>(emptyPlace);
   const [route, setRoute] = useState('');
   const [note, setNote] = useState('');
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(!isCreate);
   const [pending, setPending] = useState(false);
@@ -71,6 +73,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
       setStarbucks(emptyPlace());
       setRoute('');
       setNote('');
+      setPhotos([]);
       setError('');
       setLoading(false);
       return;
@@ -94,6 +97,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
         setStarbucks(fromMeet(event.starbucks));
         setRoute(event.route || '');
         setNote(event.note || '');
+        setPhotos(event.photos || []);
       } catch (err) {
         if (cancelled) return;
         setError(err instanceof Error ? err.message : '加载失败');
@@ -309,6 +313,8 @@ export function EventFormPage({ mode }: { mode: Mode }) {
           </div>
         </form>
       ) : null}
+
+      {!loading && !isCreate && id ? <PhotoGrid eventId={id} photos={photos} /> : null}
     </main>
   );
 }
