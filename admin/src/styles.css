@@ -1,0 +1,13 @@
+:root {
+  --color-brand: #C74634;
+  --color-sbux: #006241;
+  --bg: #FAFAFA;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+}
