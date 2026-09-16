@@ -87,6 +87,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
         if (cancelled) return;
         if (!res.ok || !res.data) {
           setError(res.msg);
+          setPhotos([]);
           return;
         }
         const event = res.data;
@@ -100,6 +101,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
         setPhotos(event.photos || []);
       } catch (err) {
         if (cancelled) return;
+        setPhotos([]);
         setError(err instanceof Error ? err.message : '加载失败');
       } finally {
         if (!cancelled) setLoading(false);
@@ -314,7 +316,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
         </form>
       ) : null}
 
-      {!loading && !isCreate && id ? <PhotoGrid eventId={id} photos={photos} /> : null}
+      {!loading && !error && !isCreate && id ? <PhotoGrid eventId={id} photos={photos} /> : null}
     </main>
   );
 }

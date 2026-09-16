@@ -14,6 +14,8 @@ function failMsg(err: unknown, fallback: string) {
 export function PhotoGrid({ eventId, photos: initialPhotos = [] }: PhotoGridProps) {
   const [photos, setPhotos] = useState<Photo[]>(initialPhotos);
   const [urls, setUrls] = useState<Record<string, string>>({});
+  const [urlError, setUrlError] = useState('');
+  const [urlRetry, setUrlRetry] = useState(0);
   const [failed, setFailed] = useState<{ index: number; msg: string }[]>([]);
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,6 +29,7 @@ export function PhotoGrid({ eventId, photos: initialPhotos = [] }: PhotoGridProp
     const ids = photos.map((photo) => photo.fileID).filter(Boolean);
     if (ids.length === 0) {
       setUrls({});
+      setUrlError('');
       return;
     }
     (async () => {
@@ -39,14 +42,17 @@ export function PhotoGrid({ eventId, photos: initialPhotos = [] }: PhotoGridProp
           if (item.tempFileURL) next[item.fileID] = item.tempFileURL;
         }
         setUrls(next);
-      } catch {
-        if (!cancelled) setUrls({});
+        setUrlError(res.code || res.message ? res.message || String(res.code) : '');
+      } catch (err) {
+        if (cancelled) return;
+        setUrls({});
+        setUrlError(failMsg(err, '获取照片地址失败'));
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [photos]);
+  }, [photos, urlRetry]);
 
   async function onUpload(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -129,6 +135,14 @@ export function PhotoGrid({ eventId, photos: initialPhotos = [] }: PhotoGridProp
         />
       </label>
       {busy ? <p>处理中...</p> : null}
+      {urlError ? (
+        <section className="list-error">
+          <p className="auth-error" role="alert">{urlError}</p>
+          <button type="button" onClick={() => setUrlRetry((n) => n + 1)}>
+            重试
+          </button>
+        </section>
+      ) : null}
       {failed.length > 0 ? (
         <ul className="photo-failed" role="alert">
           {failed.map((item) => (
