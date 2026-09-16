@@ -68,30 +68,33 @@ VITE_PUBLISHABLE_KEY=<从 CloudBase 控制台或 MCP getPublishableKey 获取>
 
 ## 📦 部署
 
-**必须**用 CloudBase **应用托管**，`serviceName=admin`（MCP `manageApps`）。
+这个环境里 `manageApps` 和 H5 **共用同一个静态托管桶**。用 `manageApps` 部署 `admin` 会覆盖群通知页，**不要再用**。
 
-```
-manageApps(
-  action="deployApp",
-  serviceName="admin",
-  filePath="<repo>/admin",
-  framework="static",
-  installCmd="npm install",
-  buildCmd="npm run build",
-  buildPath="dist"
-)
+正确做法：本地构建后，把 `dist/` 上传到托管路径 `/admin/`：
+
+```bash
+cd admin && npm run build
+# MCP manageHosting action=upload
+# localPath = admin/dist
+# cloudPath = /admin/
 ```
 
-部署后默认地址：
+后台地址：
 
-**https://admin-run-spot-prod-d1gb2jd1j3ce2e7fb.webapps.tcloudbase.com**
+**https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/admin/**
 
-把该站点 origin 加进环境安全域名（CORS），例如 `admin-run-spot-prod-d1gb2jd1j3ce2e7fb.webapps.tcloudbase.com:443`。
+H5 仍在站点根路径：
+
+**https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/**
+
+CORS 安全域名需要：
+
+- `localhost:5173`
+- `run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com:443`
 
 ### 禁止
 
-- **禁止** `tcb hosting:deploy` 把 `admin/` 发到现有 H5 静态托管桶。那会覆盖群通知页。
-- H5 继续走原来的静态托管（`*.tcloudbaseapp.com`），本后台走独立应用域名。
+- **禁止** `manageApps deployApp` 或 `tcb hosting:deploy` 把 `admin/` 发到托管根路径 `/`。那会覆盖 H5。
 
 ### ICP / 自定义域名
 
