@@ -84,31 +84,36 @@ exports.pickEventPatch = pickEventPatch;
 
 exports.main = async (event) => {
   const { id } = event || {};
-  if (!id) return { code: -1, msg: '缺少 id 参数' };
+  if (typeof id !== 'string' || !id) return { code: -1, msg: '缺少 id 参数' };
 
   const gate = await assertAdmin(cloud, db);
   if (!gate.ok) return { code: gate.code, msg: gate.msg };
 
-  const existing = await db.collection('events').where({ id }).limit(1).get();
-  if (existing.data.length === 0) return { code: -1, msg: '活动不存在' };
+  try {
+    const existing = await db.collection('events').where({ id }).limit(1).get();
+    if (existing.data.length === 0) return { code: -1, msg: '活动不存在' };
 
-  const patch = pickEventPatch(event);
-  if (patch.meet !== undefined) {
-    const meet = await resolvePlace(patch.meet);
-    if (meet === undefined) delete patch.meet;
-    else patch.meet = meet;
-  }
-  if (patch.starbucks !== undefined) {
-    const sbux = await resolvePlace(patch.starbucks);
-    if (sbux === undefined) delete patch.starbucks;
-    else patch.starbucks = sbux;
-  }
+    const patch = pickEventPatch(event);
+    if (patch.meet !== undefined) {
+      const meet = await resolvePlace(patch.meet);
+      if (meet === undefined || meet === null) delete patch.meet;
+      else patch.meet = meet;
+    }
+    if (patch.starbucks !== undefined) {
+      const sbux = await resolvePlace(patch.starbucks);
+      if (sbux === undefined) delete patch.starbucks;
+      else patch.starbucks = sbux;
+    }
 
-  if (Object.keys(patch).length === 0) {
-    return { code: -1, msg: '没有可更新的字段' };
-  }
+    if (Object.keys(patch).length === 0) {
+      return { code: -1, msg: '没有可更新的字段' };
+    }
 
-  await db.collection('events').where({ id }).update({ data: patch });
-  const updated = await db.collection('events').where({ id }).limit(1).get();
-  return { code: 0, msg: 'ok', data: { event: updated.data[0] } };
+    await db.collection('events').where({ id }).update({ data: patch });
+    const updated = await db.collection('events').where({ id }).limit(1).get();
+    return { code: 0, msg: 'ok', data: { event: updated.data[0] } };
+  } catch (err) {
+    console.error('updateEvent 失败', err);
+    return { code: -1, msg: err.message || '更新失败' };
+  }
 };
