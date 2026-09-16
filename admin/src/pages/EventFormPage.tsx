@@ -59,7 +59,8 @@ export function EventFormPage({ mode }: { mode: Mode }) {
   const [route, setRoute] = useState('');
   const [note, setNote] = useState('');
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
+  const [formError, setFormError] = useState('');
   const [loading, setLoading] = useState(!isCreate);
   const [pending, setPending] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -74,19 +75,21 @@ export function EventFormPage({ mode }: { mode: Mode }) {
       setRoute('');
       setNote('');
       setPhotos([]);
-      setError('');
+      setLoadError('');
+      setFormError('');
       setLoading(false);
       return;
     }
     let cancelled = false;
     (async () => {
       setLoading(true);
-      setError('');
+      setLoadError('');
+      setFormError('');
       try {
         const res = await callFn<EventItem>('getEvent', { id });
         if (cancelled) return;
         if (!res.ok || !res.data) {
-          setError(res.msg);
+          setLoadError(res.msg);
           setPhotos([]);
           return;
         }
@@ -102,7 +105,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
       } catch (err) {
         if (cancelled) return;
         setPhotos([]);
-        setError(err instanceof Error ? err.message : '加载失败');
+        setLoadError(err instanceof Error ? err.message : '加载失败');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -131,20 +134,20 @@ export function EventFormPage({ mode }: { mode: Mode }) {
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     if (!date) {
-      setError('请选择日期');
+      setFormError('请选择日期');
       return;
     }
     if (!time) {
-      setError('请选择时间');
+      setFormError('请选择时间');
       return;
     }
     if (!meet.name) {
-      setError('请填写集合点');
+      setFormError('请填写集合点');
       return;
     }
 
     setPending(true);
-    setError('');
+    setFormError('');
     const payload: Record<string, unknown> = {
       time,
       meet: asPlace(meet),
@@ -158,7 +161,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
       if (isCreate) {
         const res = await callFn<{ event: EventItem }>('createEvent', { ...payload, date });
         if (!res.ok) {
-          setError(res.msg);
+          setFormError(res.msg);
           return;
         }
         navigate(`/events/${res.data?.event?.id || date}`);
@@ -171,11 +174,11 @@ export function EventFormPage({ mode }: { mode: Mode }) {
         title: meet.name,
       });
       if (!res.ok) {
-        setError(res.msg);
+        setFormError(res.msg);
         return;
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : '保存失败');
+      setFormError(err instanceof Error ? err.message : '保存失败');
     } finally {
       setPending(false);
     }
@@ -185,16 +188,16 @@ export function EventFormPage({ mode }: { mode: Mode }) {
     if (!id) return;
     if (!window.confirm('确定删除该活动？')) return;
     setDeleting(true);
-    setError('');
+    setFormError('');
     try {
       const res = await callFn('deleteEvent', { id });
       if (!res.ok) {
-        setError(res.msg);
+        setFormError(res.msg);
         return;
       }
       navigate('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : '删除失败');
+      setFormError(err instanceof Error ? err.message : '删除失败');
     } finally {
       setDeleting(false);
     }
@@ -212,7 +215,8 @@ export function EventFormPage({ mode }: { mode: Mode }) {
       </header>
 
       {loading ? <p>加载中...</p> : null}
-      {error ? <p className="auth-error" role="alert">{error}</p> : null}
+      {loadError ? <p className="auth-error" role="alert">{loadError}</p> : null}
+      {formError ? <p className="auth-error" role="alert">{formError}</p> : null}
 
       {!loading ? (
         <form className="event-form" onSubmit={onSubmit}>
@@ -316,7 +320,7 @@ export function EventFormPage({ mode }: { mode: Mode }) {
         </form>
       ) : null}
 
-      {!loading && !error && !isCreate && id ? <PhotoGrid eventId={id} photos={photos} /> : null}
+      {!loading && !loadError && !isCreate && id ? <PhotoGrid eventId={id} photos={photos} /> : null}
     </main>
   );
 }
