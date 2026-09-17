@@ -4,6 +4,7 @@
   "description": "通过表单创建活动（自动 geocode + 写数据库）",
   "main": "index.js",
   "dependencies": {
-    "wx-server-sdk": "~2.6.3"
+    "wx-server-sdk": "~2.6.3",
+    "@cloudbase/node-sdk": "~3.10.0"
   }
 }

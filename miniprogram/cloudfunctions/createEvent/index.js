@@ -7,6 +7,7 @@ const https = require('https');
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
+const { assertAdmin } = require('./assertAdmin');
 
 const AMAP_KEY = 'daa291695ce6f29af3b05436ab1122da';
 const CITY = '上海';
@@ -63,12 +64,9 @@ exports.main = async (event, context) => {
   } = event || {};
 
   // 🔐 权限检查
-  const wxContext = cloud.getWXContext();
-  const OPENID = wxContext.OPENID;
-  const teamRes = await db.collection('team').where({ id: 'meta' }).limit(1).get();
-  const admins = teamRes.data[0]?.admins || [];
-  if (!Array.isArray(admins) || !admins.includes(OPENID)) {
-    return { code: -1, msg: '未授权：请联系群主把你加入管理员列表' };
+  const gate = await assertAdmin(cloud, db);
+  if (!gate.ok) {
+    return { code: gate.code, msg: gate.msg };
   }
 
   if (!date || !time) {

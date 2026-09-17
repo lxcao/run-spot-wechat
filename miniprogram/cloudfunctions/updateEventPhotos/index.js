@@ -3,6 +3,7 @@
 // 功能：把照片信息原子追加到 events.photos（用 _push 避免并发覆盖）
 
 const cloud = require('wx-server-sdk');
+const { assertAdmin } = require('./assertAdmin');
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
@@ -11,6 +12,11 @@ const _ = db.command;  // 🆕 用于原子操作
 
 const MAX_PHOTOS_PER_EVENT = 100;     // 每个活动最多 100 张
 const MAX_FILE_SIZE = 600 * 1024;     // 单张最大 600KB
+
+function shouldSkipPerUserLimit(kind) {
+  return kind === 'web';
+}
+exports.shouldSkipPerUserLimit = shouldSkipPerUserLimit;
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
@@ -42,10 +48,11 @@ exports.main = async (event, context) => {
       return { code: -1, msg: `活动照片已达上限 ${MAX_PHOTOS_PER_EVENT} 张`, data: null };
     }
 
-    // 限制：同一跑友每场活动最多 9 张（基于当前读到的计数）
+    // 限制：同一跑友每场活动最多 9 张（网站管理员跳过；跑友 assertAdmin 失败不拒绝上传）
+    const gate = await assertAdmin(cloud, db);
     const myCount = photos.filter((p) => p.uploader === openid).length;
-    if (myCount >= 9) {
-      return { code: -1, msg: '你已经上传过 9 张了（每场活动最多 9 张）', data: null };
+    if (!shouldSkipPerUserLimit(gate.ok ? gate.kind : null) && myCount >= 9) {
+      return { code: -1, msg: '你已经上传过 9 张了（每场活动最多 9 张）' };
     }
 
     // 构造新照片记录

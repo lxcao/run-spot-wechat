@@ -28,10 +28,18 @@ dist/
 # 本地数据
 .env
 .env.local
+.cloudbase/
+*.tsbuildinfo
 
 # 临时文件
 /tmp/
 *.tmp
+
+# Brainstorm visual companion
+.superpowers/
+
+# Git worktrees
+.worktrees/
 
 # 微信开发者工具自动生成（个人本地配置）
 miniprogram/project.private.config.json
