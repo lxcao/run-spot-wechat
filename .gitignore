@@ -28,6 +28,8 @@ dist/
 # 本地数据
 .env
 .env.local
+.cloudbase/
+*.tsbuildinfo
 
 # 临时文件
 /tmp/

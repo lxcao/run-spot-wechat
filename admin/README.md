@@ -2,7 +2,7 @@
 
 > 管理员用用户名密码登录后，对 CloudBase 里的活动做增删改查并管理照片。
 >
-> 与 `h5/`、`miniprogram/` 同级；部署到独立应用域名，**不覆盖** H5 静态托管。
+> 与 `h5/`、`miniprogram/` 同级；部署到同一静态托管的 `/admin/` 路径，**不要**发到根路径，否则会覆盖 H5。
 
 ---
 
@@ -39,7 +39,7 @@ VITE_PUBLISHABLE_KEY=<从 CloudBase 控制台或 MCP getPublishableKey 获取>
 ## 🔐 登录
 
 - **用户名 + 密码**（CloudBase Web Auth）。
-- **没有注册入口**，也没有匿名登录。账号由群主在 CloudBase 控制台「用户管理」或 MCP `manageAppAuth(action="createUser")` 创建。
+- **没有注册入口**，也没有匿名登录。账号由群主在 CloudBase 控制台「用户管理」或 MCP `managePermissions(action="createUser")` 创建。
 - 未登录访问任意非 login 路由 → 跳到 `#/login`。
 
 ---

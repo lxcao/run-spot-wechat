@@ -1,7 +1,7 @@
 # 跑团网页后台（v5 重做）设计
 
 日期：2026-09-16  
-状态：待实现  
+状态：已实现（托管在 `/admin/`，ICP 未完成前不绑自定义域名）  
 环境：`run-spot-prod-d1gb2jd1j3ce2e7fb`（上海，个人版，NoSQL）  
 域名目标：`oracle.run.caolingxin.cn`（`caolingxin.cn` 已购买，ICP 未完成）
 
