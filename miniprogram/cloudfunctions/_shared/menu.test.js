@@ -1,6 +1,5 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const path = require('path');
 const { loadSeedMenu, findDrink, findFood, sanitizeOptions } = require('./menu');
 
 const menu = loadSeedMenu();
@@ -20,6 +19,15 @@ test('findDrink unknown is null', () => {
   assert.equal(findDrink(menu, 'nope'), null);
 });
 
+test('findFood by id', () => {
+  const f = findFood(menu, 'f-croissant');
+  assert.equal(f.name, '法式香酥可颂');
+});
+
+test('findFood unknown is null', () => {
+  assert.equal(findFood(menu, 'nope'), null);
+});
+
 test('sanitizeOptions fills labels and drops unknown', () => {
   const opts = sanitizeOptions(menu.customizations, [
     { group: 'cupSize', id: 'grande' },
@@ -37,4 +45,11 @@ test('espressoShots and storeCup', () => {
   ]);
   assert.equal(opts[0].label, '浓缩 2 份');
   assert.equal(opts[1].label, '优先使用店内用杯');
+});
+
+test('sanitizeOptions nested sugarFreeFlavor', () => {
+  const opts = sanitizeOptions(menu.customizations, [
+    { group: 'sugarFreeFlavor', id: 'vanilla' },
+  ]);
+  assert.equal(opts[0].label, '香草风味');
 });
