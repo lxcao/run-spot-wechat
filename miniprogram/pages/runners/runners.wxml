@@ -1,0 +1,18 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="loading"><text>加载中...</text></view>
+  <view wx:if="{{error}}" class="empty"><text>{{error}}</text></view>
+  <view wx:if="{{!loading && !error && runners.length === 0}}" class="empty">
+    <text>团长还没录入口味</text>
+  </view>
+  <view wx:for="{{runners}}" wx:key="id" class="card">
+    <view class="name">{{item.nickname}}</view>
+    <view wx:if="{{item.drinkLines.length}}" class="block">
+      <view class="label">咖啡</view>
+      <view wx:for="{{item.drinkLines}}" wx:for-item="line" wx:key="*this" class="line">{{line}}</view>
+    </view>
+    <view wx:if="{{item.foodLines.length}}" class="block">
+      <view class="label">餐食</view>
+      <view wx:for="{{item.foodLines}}" wx:for-item="line" wx:key="*this" class="line">{{line}}</view>
+    </view>
+  </view>
+</view>

@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/runners/runners",
     "pages/event/event",
     "pages/photo-view/photo-view",
     "pages/event-create/event-create"
