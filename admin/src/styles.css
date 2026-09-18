@@ -430,3 +430,17 @@ body,
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.list-nav { margin: 0 0 8px; font-size: 14px; color: #666; }
+.list-secondary {
+  margin-right: 12px;
+  color: var(--color-sbux);
+}
+.runner-row { display: flex; gap: 8px; align-items: flex-start; }
+.runner-row .event-card { flex: 1; }
+.runner-delete {
+  border: 0;
+  background: transparent;
+  color: #a12b1a;
+  cursor: pointer;
+}

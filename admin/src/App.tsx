@@ -6,6 +6,8 @@ import { checkWebAdmin } from './lib/events';
 import { EventFormPage } from './pages/EventFormPage';
 import { EventListPage } from './pages/EventListPage';
 import { LoginPage } from './pages/LoginPage';
+import { RunnerFormPage } from './pages/RunnerFormPage';
+import { RunnerListPage } from './pages/RunnerListPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
 import type { Team } from './types';
 
@@ -77,6 +79,9 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={<EventListPage />} />
+        <Route path="/runners" element={<RunnerListPage />} />
+        <Route path="/runners/new" element={<RunnerFormPage key="create" mode="create" />} />
+        <Route path="/runners/:id" element={<RunnerFormPage mode="edit" />} />
         <Route path="/events/new" element={<EventFormPage key="create" mode="create" />} />
         <Route path="/events/:id" element={<EventFormPage mode="edit" />} />
         <Route path="*" element={<Navigate to="/" replace />} />
