@@ -76,6 +76,10 @@ Page({
     wx.navigateTo({ url: `/pages/event/event?id=${id}` });
   },
 
+  onTasteTap() {
+    wx.navigateTo({ url: '/pages/runners/runners' });
+  },
+
   // 跳到配置页
   onConfigTap() {
     wx.navigateTo({ url: '/pages/event-create/event-create' });

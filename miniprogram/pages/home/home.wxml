@@ -29,6 +29,11 @@
     </view>
   </view>
 
+  <view class="taste-entry" bindtap="onTasteTap">
+    <text class="taste-entry__title">星巴克口味</text>
+    <text class="taste-entry__sub">跑完按癖好点咖啡和早餐</text>
+  </view>
+
   <!-- 加载中 -->
   <view class="loading" wx:if="{{loading}}">
     <text>加载中...</text>

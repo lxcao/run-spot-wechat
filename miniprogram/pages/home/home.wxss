@@ -224,6 +224,34 @@
   margin-top: 16rpx;
 }
 
+/* 星巴克口味入口 */
+.taste-entry {
+  margin: 48rpx 32rpx 0;
+  background: var(--bg-card);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.taste-entry:active {
+  background: var(--bg-soft);
+  transform: scale(0.99);
+}
+
+.taste-entry__title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #C74634;
+}
+
+.taste-entry__sub {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+  margin-top: 8rpx;
+}
+
 /* 本周集合大卡 */
 .up-card {
   background: var(--bg-card);
