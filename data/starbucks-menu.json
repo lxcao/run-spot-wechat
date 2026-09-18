@@ -1,0 +1,939 @@
+{
+  "source": "Starbucks China App screenshots, 2026-09-18",
+  "scope": "national-generic",
+  "notes": [
+    "同一饮品若在多个分类重复出现，这里只保留一条。",
+    "「法式香草风味拿铁（不另外加…」按同系列补全为「不另外加糖」。",
+    "配置来自拿铁定制页；茶、星冰乐、浓缩、蒸气奶不一定有全部选项。",
+    "餐食截图没有定制页，foods 暂无 options。",
+    "侧栏有「冰棒雪糕」「月饼」但未滚到列表，未收录。",
+    "不收录价格和是否有货。"
+  ],
+  "customizations": {
+    "cupSize": [
+      {
+        "id": "tall",
+        "label": "中杯",
+        "volumeMl": 355
+      },
+      {
+        "id": "grande",
+        "label": "大杯",
+        "volumeMl": 473
+      },
+      {
+        "id": "venti",
+        "label": "超大杯",
+        "volumeMl": 592
+      }
+    ],
+    "storeCup": {
+      "id": "store-cup",
+      "label": "优先使用店内用杯",
+      "type": "toggle"
+    },
+    "temperature": [
+      {
+        "id": "extra-hot",
+        "label": "特别热"
+      },
+      {
+        "id": "hot",
+        "label": "热"
+      },
+      {
+        "id": "warm",
+        "label": "微热"
+      },
+      {
+        "id": "iced",
+        "label": "冰"
+      },
+      {
+        "id": "light-ice",
+        "label": "少冰"
+      },
+      {
+        "id": "no-ice",
+        "label": "去冰"
+      }
+    ],
+    "sugarFreeFlavor": {
+      "label": "无糖风味定制/添加",
+      "options": [
+        {
+          "id": "vanilla",
+          "label": "香草风味"
+        },
+        {
+          "id": "hazelnut",
+          "label": "榛果风味"
+        },
+        {
+          "id": "salted-caramel",
+          "label": "海盐焦糖风味",
+          "recommended": true
+        },
+        {
+          "id": "berry",
+          "label": "莓莓风味"
+        },
+        {
+          "id": "pandan",
+          "label": "糯香斑斓风味"
+        },
+        {
+          "id": "french-vanilla",
+          "label": "法式香草风味"
+        },
+        {
+          "id": "passionfruit",
+          "label": "百香果风味",
+          "recommended": true
+        }
+      ]
+    },
+    "espressoBean": [
+      {
+        "id": "signature",
+        "label": "经典浓缩（深烘）"
+      },
+      {
+        "id": "blonde",
+        "label": "金烘浓缩（浅烘）"
+      },
+      {
+        "id": "decaf",
+        "label": "低因浓缩（深烘）",
+        "tag": "下午友好"
+      }
+    ],
+    "espressoStyle": [
+      {
+        "id": "original",
+        "label": "原萃浓缩",
+        "desc": "浓郁醇香，焦糖般甜感"
+      },
+      {
+        "id": "fine",
+        "label": "精萃浓缩",
+        "desc": "精炼萃取，倍感甜郁"
+      },
+      {
+        "id": "full",
+        "label": "满萃浓缩",
+        "desc": "深度萃取，焦香饱满"
+      }
+    ],
+    "espressoShots": {
+      "label": "浓缩份数",
+      "min": 1,
+      "default": 2
+    },
+    "milk": [
+      {
+        "id": "whole",
+        "label": "全脂牛奶"
+      },
+      {
+        "id": "almond",
+        "label": "巴旦木奶"
+      },
+      {
+        "id": "oat",
+        "label": "燕麦奶"
+      },
+      {
+        "id": "skim",
+        "label": "脱脂牛奶"
+      }
+    ],
+    "foam": [
+      {
+        "id": "standard",
+        "label": "标准奶泡"
+      },
+      {
+        "id": "none",
+        "label": "去奶泡"
+      },
+      {
+        "id": "light",
+        "label": "少奶泡"
+      },
+      {
+        "id": "extra",
+        "label": "多奶泡"
+      }
+    ],
+    "sweetness": [
+      {
+        "id": "classic",
+        "label": "经典糖"
+      },
+      {
+        "id": "zero-cal",
+        "label": "0热量代糖"
+      },
+      {
+        "id": "unsweetened",
+        "label": "不另外加糖"
+      }
+    ]
+  },
+  "drinks": [
+    {
+      "id": "d-passionfruit-latte-unsweetened",
+      "category": "真味无糖系列咖啡",
+      "name": "百香果风味拿铁（不另外加糖）",
+      "new": true,
+      "subtitle": "百香果的热带风味与饱满汁感"
+    },
+    {
+      "id": "d-passionfruit-americano",
+      "category": "真味无糖系列咖啡",
+      "name": "百香果风味美式",
+      "new": true,
+      "subtitle": "百香果的热带风味与饱满汁感"
+    },
+    {
+      "id": "d-french-vanilla-latte-unsweetened",
+      "category": "真味无糖系列咖啡",
+      "name": "法式香草风味拿铁（不另外加糖）",
+      "new": true,
+      "defaultConfig": "不另外加糖/大杯/冰"
+    },
+    {
+      "id": "d-vanilla-latte-unsweetened",
+      "category": "真味无糖系列咖啡",
+      "name": "香草风味拿铁（不另外加糖）",
+      "subtitle": "风味加满不加糖"
+    },
+    {
+      "id": "d-pandan-latte-unsweetened",
+      "category": "真味无糖系列咖啡",
+      "name": "糯香斑斓风味拿铁（不另外加糖）",
+      "defaultConfig": "不另外加糖/大杯/热/燕麦奶"
+    },
+    {
+      "id": "d-berry-latte-unsweetened",
+      "category": "真味无糖系列咖啡",
+      "name": "莓莓风味拿铁（不另外加糖）",
+      "defaultConfig": "不另外加糖/大杯/热/全脂牛奶"
+    },
+    {
+      "id": "d-rose20-latte-unsweetened",
+      "category": "真味无糖系列咖啡",
+      "name": "玫瑰20拿铁（不另外加糖）",
+      "subtitle": "鲜花慢萃，一杯满载20朵玫瑰精萃*"
+    },
+    {
+      "id": "d-vanilla-protein-latte-pro",
+      "category": "高蛋白拿铁PRO",
+      "name": "香草风味高蛋白拿铁PRO",
+      "subtitle": "一杯20g高蛋白*，好喝好状态"
+    },
+    {
+      "id": "d-salted-caramel-protein-latte-pro",
+      "category": "高蛋白拿铁PRO",
+      "name": "海盐焦糖风味高蛋白拿铁PRO",
+      "subtitle": "一杯20g高蛋白*，好喝好状态"
+    },
+    {
+      "id": "d-protein-latte-pro",
+      "category": "高蛋白拿铁PRO",
+      "name": "高蛋白拿铁PRO",
+      "subtitle": "一杯20g高蛋白*，好喝好状态"
+    },
+    {
+      "id": "d-protein-matcha-latte-pro",
+      "category": "高蛋白拿铁PRO",
+      "name": "高蛋白抹茶拿铁PRO",
+      "subtitle": "一杯20g高蛋白*，好喝好状态"
+    },
+    {
+      "id": "d-rose20-latte",
+      "category": "玫瑰20",
+      "name": "玫瑰20拿铁",
+      "subtitle": "鲜花慢萃，一杯满载20朵玫瑰精萃*"
+    },
+    {
+      "id": "d-rose20-americano",
+      "category": "玫瑰20",
+      "name": "玫瑰20美式",
+      "subtitle": "鲜花慢萃，一杯满载20朵玫瑰精萃*"
+    },
+    {
+      "id": "d-rose20-matcha-latte",
+      "category": "玫瑰20",
+      "name": "玫瑰20抹茶拿铁",
+      "subtitle": "鲜花慢萃，一杯满载20朵玫瑰精萃*"
+    },
+    {
+      "id": "d-gold-layer-americano",
+      "category": "浓缩咖啡",
+      "name": "金渐层美式",
+      "new": true,
+      "subtitle": "流动渐层纹理，释放浓缩咖啡香气"
+    },
+    {
+      "id": "d-passionfruit-gold-layer-americano",
+      "category": "浓缩咖啡",
+      "name": "百香果风味金渐层美式",
+      "new": true,
+      "subtitle": "流动渐层纹理，释放浓缩咖啡香气"
+    },
+    {
+      "id": "d-passionfruit-latte",
+      "category": "浓缩咖啡",
+      "name": "百香果风味拿铁",
+      "subtitle": "百香果的热带风味与饱满汁感"
+    },
+    {
+      "id": "d-french-vanilla-latte",
+      "category": "浓缩咖啡",
+      "name": "法式香草风味拿铁",
+      "subtitle": "法式烘焙甜品般的香草甜香"
+    },
+    {
+      "id": "d-french-vanilla-shaken-espresso",
+      "category": "浓缩咖啡",
+      "name": "法式香草风味冰震浓缩",
+      "subtitle": "浓郁冰咖新体验"
+    },
+    {
+      "id": "d-salted-milk-ice-cream-latte",
+      "category": "浓缩咖啡",
+      "name": "海盐牛乳冰淇淋风味拿铁",
+      "subtitle": "自带清甜"
+    },
+    {
+      "id": "d-salted-caramel-americano",
+      "category": "浓缩咖啡",
+      "name": "海盐焦糖风味美式",
+      "subtitle": "甜度可选/默认不另外加糖"
+    },
+    {
+      "id": "d-americano",
+      "category": "浓缩咖啡",
+      "name": "美式咖啡",
+      "defaultConfig": "大杯/热/标准/标准浓缩咖啡"
+    },
+    {
+      "id": "d-latte",
+      "category": "浓缩咖啡",
+      "name": "拿铁",
+      "defaultConfig": "大杯/热/全脂牛奶/标准奶泡/标准浓缩"
+    },
+    {
+      "id": "d-flat-white",
+      "category": "浓缩咖啡",
+      "name": "馥芮白®",
+      "defaultConfig": "大杯/热/全脂牛奶/精萃浓缩咖啡"
+    },
+    {
+      "id": "d-caramel-macchiato",
+      "category": "浓缩咖啡",
+      "name": "焦糖玛奇朵",
+      "defaultConfig": "大杯/热/全脂牛奶/香草糖浆/焦糖"
+    },
+    {
+      "id": "d-vanilla-latte",
+      "category": "浓缩咖啡",
+      "name": "香草风味拿铁",
+      "defaultConfig": "大杯/热/全脂牛奶/香草糖浆/标准奶泡"
+    },
+    {
+      "id": "d-hazelnut-latte",
+      "category": "浓缩咖啡",
+      "name": "榛果风味拿铁",
+      "defaultConfig": "大杯/热/全脂牛奶/榛果糖浆/标准奶泡"
+    },
+    {
+      "id": "d-belgian-chocolate-latte",
+      "category": "浓缩咖啡",
+      "name": "比利时黑巧拿铁",
+      "defaultConfig": "大杯/热"
+    },
+    {
+      "id": "d-extra-shot-latte",
+      "category": "浓缩咖啡",
+      "name": "浓郁咖啡拿铁",
+      "defaultConfig": "大杯/热/全脂牛奶/标准奶泡/标准浓缩"
+    },
+    {
+      "id": "d-mocha",
+      "category": "浓缩咖啡",
+      "name": "摩卡",
+      "defaultConfig": "大杯/热/全脂牛奶/标准奶油/摩卡酱"
+    },
+    {
+      "id": "d-cappuccino",
+      "category": "浓缩咖啡",
+      "name": "卡布奇诺",
+      "defaultConfig": "大杯/热/全脂牛奶/标准奶泡/标准浓缩"
+    },
+    {
+      "id": "d-berry-americano",
+      "category": "浓缩咖啡",
+      "name": "莓莓风味美式",
+      "subtitle": "甜度可选/默认不另外加糖"
+    },
+    {
+      "id": "d-berry-latte",
+      "category": "浓缩咖啡",
+      "name": "莓莓风味拿铁",
+      "defaultConfig": "大杯/热/全脂牛奶"
+    },
+    {
+      "id": "d-pandan-latte",
+      "category": "浓缩咖啡",
+      "name": "糯香斑斓风味拿铁",
+      "defaultConfig": "大杯/热/燕麦奶"
+    },
+    {
+      "id": "d-pandan-americano",
+      "category": "浓缩咖啡",
+      "name": "糯香斑斓风味美式",
+      "subtitle": "甜度可选/默认不另外加糖"
+    },
+    {
+      "id": "d-espresso",
+      "category": "浓缩咖啡",
+      "name": "浓缩咖啡",
+      "defaultConfig": "单份/热/标准浓缩咖啡"
+    },
+    {
+      "id": "d-espresso-con-panna",
+      "category": "浓缩咖啡",
+      "name": "浓缩康宝蓝",
+      "defaultConfig": "单份/热/标准奶油/标准浓缩咖啡"
+    },
+    {
+      "id": "d-espresso-macchiato",
+      "category": "浓缩咖啡",
+      "name": "浓缩玛奇朵",
+      "defaultConfig": "单份/热/标准浓缩咖啡"
+    },
+    {
+      "id": "d-extra-ice-fine-americano",
+      "category": "全冰美式",
+      "name": "加浓全冰精萃美式",
+      "subtitle": "全冰去水x浓缩咖啡"
+    },
+    {
+      "id": "d-light-cream-ice-americano",
+      "category": "全冰美式",
+      "name": "轻甜奶油全冰美式",
+      "subtitle": "全冰去水x浓缩咖啡"
+    },
+    {
+      "id": "d-whipped-cream-ice-americano",
+      "category": "全冰美式",
+      "name": "搅打稀奶油全冰美式",
+      "subtitle": "全冰去水x浓缩咖啡"
+    },
+    {
+      "id": "d-oat-latte",
+      "category": "植物基咖啡",
+      "name": "燕麦拿铁",
+      "defaultConfig": "大杯/热/标准"
+    },
+    {
+      "id": "d-hazelnut-almond-latte",
+      "category": "植物基咖啡",
+      "name": "榛果风味巴旦木拿铁",
+      "defaultConfig": "大杯/热/巴旦木奶"
+    },
+    {
+      "id": "d-oat-caramel-macchiato",
+      "category": "植物基咖啡",
+      "name": "燕麦焦糖玛奇朵",
+      "defaultConfig": "大杯/热/燕麦奶"
+    },
+    {
+      "id": "d-almond-latte",
+      "category": "植物基咖啡",
+      "name": "巴旦木拿铁",
+      "defaultConfig": "大杯/热/巴旦木奶"
+    },
+    {
+      "id": "d-black-tea-yuanyang",
+      "category": "鸳鸯系列",
+      "name": "红茶鸳鸯",
+      "subtitle": "蜜韵红茶x浓缩咖啡"
+    },
+    {
+      "id": "d-matcha-yuanyang",
+      "category": "鸳鸯系列",
+      "name": "抹茶鸳鸯",
+      "subtitle": "千目抹茶x浓缩咖啡"
+    },
+    {
+      "id": "d-cold-brew",
+      "category": "冷萃咖啡",
+      "name": "冷萃冰咖啡",
+      "defaultConfig": "大杯/冰"
+    },
+    {
+      "id": "d-blonde-americano",
+      "category": "金烘浓缩",
+      "name": "金烘美式咖啡",
+      "defaultConfig": "大杯/热"
+    },
+    {
+      "id": "d-blonde-flat-white",
+      "category": "金烘浓缩",
+      "name": "金烘馥芮白",
+      "defaultConfig": "大杯/热/全脂牛奶"
+    },
+    {
+      "id": "d-blonde-latte",
+      "category": "金烘浓缩",
+      "name": "金烘拿铁",
+      "defaultConfig": "大杯/热/全脂牛奶"
+    },
+    {
+      "id": "d-short-strong-latte",
+      "category": "\\浓/小杯",
+      "name": "\\浓/小杯拿铁",
+      "defaultConfig": "\\浓/小杯/热/牛奶"
+    },
+    {
+      "id": "d-coconut-short-strong-latte",
+      "category": "\\浓/小杯",
+      "name": "椰香\\浓/小杯拿铁",
+      "defaultConfig": "\\浓/小杯/热/牛奶"
+    },
+    {
+      "id": "d-berry-shaken-americano",
+      "category": "摇果咖",
+      "name": "红莓黑加仑冰摇美式",
+      "subtitle": "丰富莓果酸甜搭配金烘浓缩"
+    },
+    {
+      "id": "d-peach-shaken-americano",
+      "category": "摇果咖",
+      "name": "桃桃冰摇美式",
+      "subtitle": "沁甜清爽白桃搭配金烘浓缩"
+    },
+    {
+      "id": "d-salted-cheese-black-tea-latte",
+      "category": "茶拿铁",
+      "name": "咸芝士红茶拿铁",
+      "subtitle": "咸香芝士，浓郁醇享",
+      "tag": "人气回归"
+    },
+    {
+      "id": "d-black-tea-latte",
+      "category": "茶拿铁",
+      "name": "红茶拿铁",
+      "subtitle": "红茶全新升级"
+    },
+    {
+      "id": "d-belgian-chocolate-black-tea-latte",
+      "category": "茶拿铁",
+      "name": "比利时黑巧红茶拿铁",
+      "subtitle": "红茶全新升级"
+    },
+    {
+      "id": "d-hojicha-latte",
+      "category": "茶拿铁",
+      "name": "焙茶拿铁",
+      "subtitle": "不含咖啡"
+    },
+    {
+      "id": "d-extra-hojicha-latte",
+      "category": "茶拿铁",
+      "name": "加浓焙茶拿铁",
+      "defaultConfig": "大杯/热"
+    },
+    {
+      "id": "d-matcha-latte",
+      "category": "茶拿铁",
+      "name": "抹茶拿铁",
+      "subtitle": "不含咖啡"
+    },
+    {
+      "id": "d-extra-matcha-latte",
+      "category": "茶拿铁",
+      "name": "加浓抹茶拿铁",
+      "defaultConfig": "大杯/热"
+    },
+    {
+      "id": "d-matcha-chip-frappuccino",
+      "category": "星冰乐·茶系列",
+      "name": "抹茶可可碎片星冰乐®",
+      "subtitle": "新升级"
+    },
+    {
+      "id": "d-matcha-frappuccino",
+      "category": "星冰乐·茶系列",
+      "name": "抹茶星冰乐®",
+      "subtitle": "新升级"
+    },
+    {
+      "id": "d-hojicha-frappuccino",
+      "category": "星冰乐·茶系列",
+      "name": "焙茶星冰乐",
+      "subtitle": "人气焙茶"
+    },
+    {
+      "id": "d-mocha-chip-frappuccino",
+      "category": "星冰乐·咖啡系列",
+      "name": "摩卡可可碎片星冰乐®",
+      "defaultConfig": "大杯/冰/全脂牛奶/标准搅打奶油"
+    },
+    {
+      "id": "d-caramel-coffee-frappuccino",
+      "category": "星冰乐·咖啡系列",
+      "name": "焦糖咖啡星冰乐®",
+      "defaultConfig": "大杯/冰/全脂牛奶/标准搅打奶油"
+    },
+    {
+      "id": "d-mocha-frappuccino",
+      "category": "星冰乐·咖啡系列",
+      "name": "摩卡星冰乐®",
+      "defaultConfig": "大杯/冰/全脂牛奶/标准搅打奶油"
+    },
+    {
+      "id": "d-espresso-frappuccino",
+      "category": "星冰乐·咖啡系列",
+      "name": "浓缩咖啡星冰乐®",
+      "defaultConfig": "大杯/冰/标准/全脂牛奶"
+    },
+    {
+      "id": "d-strawberry-frappuccino",
+      "category": "星冰乐·果汁及其他风味",
+      "name": "红颜草莓星冰乐®",
+      "defaultConfig": "大杯/冰"
+    },
+    {
+      "id": "d-belgian-chocolate-frappuccino",
+      "category": "星冰乐·果汁及其他风味",
+      "name": "比利时巧克力星冰乐®",
+      "defaultConfig": "大杯/冰"
+    },
+    {
+      "id": "d-peach-jelly-frappuccino",
+      "category": "星冰乐·果汁及其他风味",
+      "name": "桃桃果冻星冰乐",
+      "defaultConfig": "大杯/冰"
+    },
+    {
+      "id": "d-mango-passionfruit-frappuccino",
+      "category": "星冰乐·果汁及其他风味",
+      "name": "芒果西番莲果茶星冰乐®",
+      "defaultConfig": "大杯/冰/标准"
+    },
+    {
+      "id": "d-vanilla-frappuccino",
+      "category": "星冰乐·果汁及其他风味",
+      "name": "香草风味星冰乐®",
+      "defaultConfig": "大杯/冰/全脂牛奶/标准搅打奶油"
+    },
+    {
+      "id": "d-chocolate-frappuccino",
+      "category": "星冰乐·果汁及其他风味",
+      "name": "巧克力风味星冰乐®",
+      "defaultConfig": "大杯/冰/全脂牛奶/标准搅打奶油"
+    },
+    {
+      "id": "d-pear-shaken-tea",
+      "category": "冰摇茶",
+      "name": "星星淘梨冰摇茶"
+    },
+    {
+      "id": "d-peach-oolong-shaken-tea",
+      "category": "冰摇茶",
+      "name": "冰摇桃桃乌龙茶",
+      "defaultConfig": "大杯/冰/标准/标准"
+    },
+    {
+      "id": "d-berry-shaken-tea",
+      "category": "冰摇茶",
+      "name": "冰摇红莓黑加仑茶",
+      "defaultConfig": "大杯/冰/标准/标准"
+    },
+    {
+      "id": "d-lemon-shaken-tea",
+      "category": "冰摇茶",
+      "name": "冰摇柠檬茶",
+      "defaultConfig": "大杯/冰/标准/原味糖浆/标准"
+    },
+    {
+      "id": "d-zen-oolong-iced-tea",
+      "category": "冰摇茶",
+      "name": "禅韵®乌龙冰茶",
+      "subtitle": "兰香馥郁"
+    },
+    {
+      "id": "d-decaf-passionfruit-latte",
+      "category": "低因推荐",
+      "name": "低因百香果风味拿铁",
+      "subtitle": "百香果的热带风味与饱满汁感"
+    },
+    {
+      "id": "d-decaf-passionfruit-americano",
+      "category": "低因推荐",
+      "name": "低因百香果风味美式",
+      "subtitle": "百香果的热带风味与饱满汁感"
+    },
+    {
+      "id": "d-decaf-gold-layer-americano",
+      "category": "低因推荐",
+      "name": "低因金渐层美式",
+      "subtitle": "流动渐层纹理，释放浓缩咖啡香气"
+    },
+    {
+      "id": "d-decaf-americano",
+      "category": "低因推荐",
+      "name": "低因美式咖啡",
+      "defaultConfig": "大杯/热"
+    },
+    {
+      "id": "d-decaf-light-cream-ice-americano",
+      "category": "低因推荐",
+      "name": "低因轻甜奶油全冰美式",
+      "subtitle": "全冰去水x低因浓缩咖啡"
+    },
+    {
+      "id": "d-decaf-french-vanilla-latte",
+      "category": "低因推荐",
+      "name": "低因法式香草风味拿铁",
+      "subtitle": "法式烘焙甜品般的香草甜香"
+    },
+    {
+      "id": "d-classic-hot-chocolate",
+      "category": "巧克力&其他饮品",
+      "name": "经典巧克力饮品",
+      "defaultConfig": "大杯/热/全脂牛奶/标准搅打奶油"
+    },
+    {
+      "id": "d-steamed-milk",
+      "category": "蒸气奶",
+      "name": "原味蒸气奶",
+      "defaultConfig": "中杯/热/标准"
+    },
+    {
+      "id": "d-vanilla-steamed-milk",
+      "category": "蒸气奶",
+      "name": "香草味蒸气奶",
+      "defaultConfig": "中杯/热/标准"
+    },
+    {
+      "id": "d-english-breakfast-tea",
+      "category": "热茶",
+      "name": "英式早餐红茶",
+      "defaultConfig": "中杯/热/标准"
+    },
+    {
+      "id": "d-biluochun-tea",
+      "category": "热茶",
+      "name": "碧螺春绿茶",
+      "defaultConfig": "中杯/热/标准"
+    },
+    {
+      "id": "d-jinxuan-oolong-tea",
+      "category": "热茶",
+      "name": "金萱乌龙茶",
+      "defaultConfig": "中杯/热/标准"
+    },
+    {
+      "id": "d-earl-grey-tea",
+      "category": "热茶",
+      "name": "伯爵调味红茶",
+      "defaultConfig": "中杯/热/标准"
+    }
+  ],
+  "foods": [
+    {
+      "id": "f-gold-mochi-pastry",
+      "category": "烘焙食品",
+      "name": "金沙麻薯酥皮包",
+      "subtitle": "软糯麻薯，细腻金沙，奶香十足"
+    },
+    {
+      "id": "f-caramel-oat-pudding-bread",
+      "category": "烘焙食品",
+      "name": "焦糖燕麦布丁面包",
+      "subtitle": "焦糖布丁，酥香绵密"
+    },
+    {
+      "id": "f-pineapple-bun",
+      "category": "烘焙食品",
+      "name": "经典菠萝包"
+    },
+    {
+      "id": "f-raisin-butter-scone",
+      "category": "烘焙食品",
+      "name": "提子干黄油司康"
+    },
+    {
+      "id": "f-croissant",
+      "category": "烘焙食品",
+      "name": "法式香酥可颂"
+    },
+    {
+      "id": "f-chocolate-muffin",
+      "category": "烘焙食品",
+      "name": "大蘑菇头形香浓巧克力麦芬"
+    },
+    {
+      "id": "f-bacon-cheese-egg-croissant",
+      "category": "早餐三明治",
+      "name": "培根芝士蛋堡"
+    },
+    {
+      "id": "f-ham-cheese-croissant",
+      "category": "早餐三明治",
+      "name": "火腿芝士可颂三明治"
+    },
+    {
+      "id": "f-grilled-pork-bagel",
+      "category": "早餐三明治",
+      "name": "炙烤松板肉贝果三明治",
+      "subtitle": "精选松板肉，炙烤之后口感Q弹有嚼劲"
+    },
+    {
+      "id": "f-chicken-egg-croissant",
+      "category": "早餐三明治",
+      "name": "蛋香鸡肉可颂"
+    },
+    {
+      "id": "f-egg-tuna-mini",
+      "category": "早餐三明治",
+      "name": "鸡蛋吞拿三明治（迷你装）"
+    },
+    {
+      "id": "f-sausage-pastry-roll",
+      "category": "早餐三明治",
+      "name": "爆汁脆肠酥皮卷"
+    },
+    {
+      "id": "f-ham-cheese-egg-grain",
+      "category": "早餐三明治",
+      "name": "火腿芝士蛋谷物三明治"
+    },
+    {
+      "id": "f-cumin-beef-baguette",
+      "category": "午餐精选",
+      "name": "孜然烤肉法棍三明治",
+      "subtitle": "孜然香气，扎实满足"
+    },
+    {
+      "id": "f-sichuan-pepper-chicken-baguette",
+      "category": "午餐精选",
+      "name": "藤椒鸡肉法棍三明治",
+      "subtitle": "藤椒轻麻，鲜嫩开胃"
+    },
+    {
+      "id": "f-beef-veggie-wrap",
+      "category": "午餐精选",
+      "name": "秘汁牛肉鲜蔬卷"
+    },
+    {
+      "id": "f-caesar-chicken-wrap",
+      "category": "午餐精选",
+      "name": "经典凯撒鸡肉卷"
+    },
+    {
+      "id": "f-beef-lasagna",
+      "category": "午餐精选",
+      "name": "牛肉意式千层面",
+      "subtitle": "料多、皮薄、特制泡菜"
+    },
+    {
+      "id": "f-spicy-beef-baguette",
+      "category": "午餐精选",
+      "name": "川香牛肉法棍三明治"
+    },
+    {
+      "id": "f-musang-king-basque",
+      "category": "蛋糕甜品",
+      "name": "猫山王榴莲巴斯克蛋糕",
+      "new": true,
+      "subtitle": "三种榴莲果肉≥25%"
+    },
+    {
+      "id": "f-orange-cat-swiss-roll",
+      "category": "蛋糕甜品",
+      "name": "大橘·猫猫瑞士卷",
+      "new": true,
+      "subtitle": "双重柑橘，清新治愈"
+    },
+    {
+      "id": "f-tiramisu",
+      "category": "蛋糕甜品",
+      "name": "经典提拉米苏蛋糕"
+    },
+    {
+      "id": "f-vanilla-mocha-mille-crepe",
+      "category": "蛋糕甜品",
+      "name": "香草摩卡千层蛋糕",
+      "subtitle": "18层柔软饼皮 温暖摩卡"
+    },
+    {
+      "id": "f-ny-cheesecake",
+      "category": "蛋糕甜品",
+      "name": "纽约风浓郁重芝士蛋糕"
+    },
+    {
+      "id": "f-chocolate-cake",
+      "category": "蛋糕甜品",
+      "name": "星巴克浓醇巧克力蛋糕"
+    },
+    {
+      "id": "f-matcha-nama-chocolate-cake",
+      "category": "蛋糕甜品",
+      "name": "千粹抹茶生巧蛋糕",
+      "subtitle": "双层抹茶带来醇苦平衡的风味"
+    },
+    {
+      "id": "f-butter-madeleine",
+      "category": "星享小点",
+      "name": "黄油玛德琳小点",
+      "new": true,
+      "subtitle": "经典法式甜点"
+    },
+    {
+      "id": "f-chocolate-madeleine",
+      "category": "星享小点",
+      "name": "巧克力玛德琳小点",
+      "new": true,
+      "subtitle": "经典法式甜点"
+    },
+    {
+      "id": "f-milk-pudding",
+      "category": "布丁&酸奶",
+      "name": "牛乳布丁"
+    },
+    {
+      "id": "f-chocolate-pudding",
+      "category": "布丁&酸奶",
+      "name": "巧克力布丁"
+    },
+    {
+      "id": "f-yogurt-mixed-berry",
+      "category": "布丁&酸奶",
+      "name": "谷物组合希腊式风味酸奶（混合莓果）"
+    },
+    {
+      "id": "f-yogurt-yellow-peach",
+      "category": "布丁&酸奶",
+      "name": "谷物组合希腊式风味酸奶（黄桃）"
+    },
+    {
+      "id": "f-bacon-slow-cooked-egg",
+      "category": "慢煮芝士蛋",
+      "name": "培根慢煮芝士蛋",
+      "subtitle": "优质蛋白，好吃好状态！"
+    },
+    {
+      "id": "f-porcini-slow-cooked-egg",
+      "category": "慢煮芝士蛋",
+      "name": "牛肝菌慢煮芝士蛋",
+      "subtitle": "优质蛋白，好吃好状态！"
+    }
+  ]
+}
