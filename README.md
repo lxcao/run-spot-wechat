@@ -8,7 +8,7 @@
 
 ## 🎯 项目状态
 
-**小程序 v3 + H5 v2 + 配置 v4 + 照片 v3 + 网页后台 v5** 全部跑通 ✅
+**小程序 v3 + H5 v2 + 配置 v4 + 照片 v3 + 网页后台 v5 + 口味备忘录 v6** 全部跑通 ✅
 
 - ✅ **H5 网页**（CloudBase 永久免费子域名，国内访问）
 - ✅ **微信小程序**（云函数 + 云数据库，群主在云开发控制台改数据，**30 秒生效**）
@@ -17,6 +17,7 @@
 - ✅ **跑友上传活动照片**（照片墙 + 全屏预览 + 原子并发安全）
 - ✅ **群主配置活动**（小程序 ⚙️ 配置页：高德地址联想 + 添加/删除 + 历史活动）
 - ✅ **网页后台**（用户名密码登录，电脑上增删改活动和照片，见 [admin/README.md](admin/README.md)）
+- ✅ **星巴克口味备忘录**（网页后台代填群昵称+咖啡配置+餐，小程序只读）
 
 ---
 
@@ -27,10 +28,12 @@ run-spot-wechat/
 ├── data/                 # 共享数据源（H5 + 小程序 + CloudBase）
 │   ├── events.json       # H5 数据源
 │   ├── cloud-import.json # 小程序云数据库导入
-│   └── team-import.json  # 跑团信息导入
+│   ├── team-import.json  # 跑团信息导入
+│   ├── starbucks-menu.json # 星巴克菜单种子（导入集合 starbucksMenu）
+│   └── starbucksimages/  # 菜单截图来源（coffee.png / config.png / food.png）
 │
 ├── admin/                # 🖥️ 网页后台（Vite + React，托管在 /admin/）
-│   ├── src/              # 登录、活动列表/表单、照片墙
+│   ├── src/              # 登录、活动列表/表单、照片墙、跑友口味
 │   └── README.md
 │
 ├── h5/                   # 🚀 跑团 H5 网页子项目（独立部署）
@@ -45,16 +48,19 @@ run-spot-wechat/
 │   ├── app.js / app.json / app.wxss
 │   ├── project.config.json
 │   ├── pages/
-│   │   ├── home/         # 主页（本周 + 历史 + 天气）
+│   │   ├── home/         # 主页（本周 + 历史 + 天气 + 星巴克口味入口）
 │   │   ├── event/        # 详情（信息 + 地图 + 照片墙 + 导航）
 │   │   ├── photo-view/   # 全屏图片预览（带返回箭头）
-│   │   └── event-create/ # 群主配置页（添加 / 删除活动 + 权限）
-│   ├── cloudfunctions/   # 10 个云函数
+│   │   ├── event-create/ # 群主配置页（添加 / 删除活动 + 权限）
+│   │   └── runners/      # 星巴克口味只读名单
+│   ├── cloudfunctions/   # 15 个云函数
 │   │   ├── getEvents / getEvent
 │   │   ├── createEvent / updateEvent / deleteEvent
 │   │   ├── updateEventPhotos / deletePhoto
 │   │   ├── getWeather / getAddressSuggestions
-│   │   └── checkAdmin
+│   │   ├── checkAdmin
+│   │   ├── getStarbucksMenu / listRunners
+│   │   └── createRunner / updateRunner / deleteRunner
 │   ├── utils/
 │   │   ├── date.js / nav.js / weather.js / upload.js
 │   └── assets/icons/
@@ -72,7 +78,7 @@ run-spot-wechat/
 │   ├── 06-CLOUD-DEVELOPMENT.md
 │   ├── 07-V2-DEPLOY.md
 │   ├── 08-V3-PHOTOS.md
-│   └── superpowers/      # v5 网页后台设计与实现计划
+│   └── superpowers/      # v5 网页后台、v6 口味备忘录设计与实现计划
 │
 ├── .gitignore
 └── README.md             ← 本文件
@@ -101,7 +107,9 @@ python3 -m http.server 8080
 4. 创建 NoSQL 集合：
    - `team`（导入 `data/team-import.json`）
    - `events`（导入 `data/cloud-import.json`）
-5. 上传所有云函数（10 个）
+   - `starbucksMenu`（导入 `data/starbucks-menu.json`，文档 `id = current`）
+   - `runners`（跑友口味，由网页后台写入）
+5. 上传所有云函数（15 个）
 6. 详细部署见 [docs/07-V2-DEPLOY.md](docs/07-V2-DEPLOY.md)
 
 ### 网页后台
@@ -128,7 +136,9 @@ https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/admin/
 data/                         ← 共享数据源（H5 + 小程序 + CloudBase）
 ├── events.json               H5 网页用
 ├── cloud-import.json          小程序云数据库用
-└── team-import.json
+├── team-import.json
+├── starbucks-menu.json        星巴克菜单种子
+└── starbucksimages/           菜单截图来源
        │
        ├── bash scripts/sync-events.sh
        │   同步到云数据库
@@ -138,8 +148,8 @@ CloudBase run-spot-prod
 ├── 静态托管
 │   ├── /                 ← H5 群通知页
 │   └── /admin/           ← 网页后台（Vite 构建产物）
-├── 云数据库（events + team）  ← 数据存储
-└── 云函数（10 个）           ← 业务逻辑
+├── 云数据库（events + team + starbucksMenu + runners）
+└── 云函数（15 个）           ← 业务逻辑
        │
        ↑ 网页后台 / 小程序 ⚙️ / 云开发控制台
        │
@@ -154,8 +164,8 @@ run-spot-wechat（你电脑）     ← 改代码 + git push
 |---|---|
 | **H5 网页** | 纯 HTML + CSS + JS（无框架）<br>+ Leaflet 地图 + 高德瓦片<br>+ uri.amap.com 导航跳转<br>+ 高德天气 API |
 | **小程序** | 微信原生（wxml/wxss/js）<br>+ 小程序 `<map>` 组件（腾讯底图）<br>+ `wx.openLocation` 唤起系统地图<br>+ 微信云开发（云函数 + NoSQL + 云存储） |
-| **网页后台** | Vite + React + TypeScript<br>+ `@cloudbase/js-sdk` 用户名密码登录<br>+ HashRouter（`#/login`、`#/`、`#/events/:id`） |
-| **后端** | 微信云开发（个人版，免费）<br>+ **10 个云函数**（getEvents / getEvent / createEvent / updateEvent / deleteEvent / updateEventPhotos / deletePhoto / getWeather / getAddressSuggestions / checkAdmin）<br>+ **2 个 NoSQL 集合**（events / team）<br>+ **1 个云存储**（活动照片） |
+| **网页后台** | Vite + React + TypeScript<br>+ `@cloudbase/js-sdk` 用户名密码登录<br>+ HashRouter（`#/login`、`#/`、`#/events/:id`、`#/runners`、`#/runners/new`、`#/runners/:id`） |
+| **后端** | 微信云开发（个人版，免费）<br>+ **15 个云函数**（getEvents / getEvent / createEvent / updateEvent / deleteEvent / updateEventPhotos / deletePhoto / getWeather / getAddressSuggestions / checkAdmin / getStarbucksMenu / listRunners / createRunner / updateRunner / deleteRunner）<br>+ **4 个 NoSQL 集合**（events / team / starbucksMenu / runners）<br>+ **1 个云存储**（活动照片） |
 | **第三方** | 高德地图 Web Service API（地理编码 + 天气 + 地址联想） |
 
 ---
@@ -182,6 +192,12 @@ run-spot-wechat（你电脑）     ← 改代码 + git push
 2. 群主在群里发活动链接（CloudBase 默认域名）
 3. 跑友点链接 → 看本周活动 + 地图 + 照片
 4. 跑友自己上传现场照片；群主也可在网页后台传/删照片
+5. 到店打开小程序「星巴克口味」，按名单代点咖啡和早餐
+
+星巴克口味（长期备忘，不是本场点单）：
+- 团长在网页后台录入群昵称 + 咖啡配置 + 餐
+- 菜单来自 starbucksMenu（仓库 JSON 导入），后台不改目录
+- 到店打开小程序「星巴克口味」只读名单
 
 每 1~2 周：
 - 群主删除旧活动（云存储照片自动清理）
@@ -206,6 +222,8 @@ run-spot-wechat（你电脑）     ← 改代码 + git push
 | [08-V3-PHOTOS](docs/08-V3-PHOTOS.md) | 照片功能文档 |
 | [admin/README](admin/README.md) | 网页后台：本地开发、登录、部署到 `/admin/` |
 | [admin-web 设计](docs/superpowers/specs/2026-09-16-admin-web-design.md) | v5 网页后台设计 |
+| [口味备忘录设计](docs/superpowers/specs/2026-09-18-starbucks-preferences-design.md) | v6 星巴克口味备忘录设计 |
+| [口味备忘录计划](docs/superpowers/plans/2026-09-18-starbucks-preferences.md) | v6 实现计划 |
 
 ---
 
@@ -217,8 +235,9 @@ run-spot-wechat（你电脑）     ← 改代码 + git push
 - ✅ **v4**：群主配置 + 权限管控（已完成）
 - ✅ **v4.1**：历史活动 + 排序修复（已完成）
 - ✅ **v5**：网页后台管理（Vite + 用户名密码，已上线 `/admin/`）
-- ⏳ **v6**：跑友报名 / 打卡 / 排行
-- ⏳ **v7**：订阅消息推送
+- ✅ **v6**：口味备忘录（网页后台代填群昵称+咖啡配置+餐，小程序只读）
+- ⏳ **v7**：跑友报名 / 打卡 / 排行
+- ⏳ **v8**：订阅消息推送
 
 ---
 
