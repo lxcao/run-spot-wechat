@@ -444,3 +444,95 @@ body,
   color: #a12b1a;
   cursor: pointer;
 }
+
+.runner-form {
+  max-width: 640px;
+}
+
+.runner-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.runner-form h2 {
+  margin: 8px 0 0;
+  font-size: 16px;
+}
+
+.runner-form select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fff;
+}
+
+.runner-form input[type='radio'],
+.runner-form input[type='checkbox'] {
+  padding: 0;
+  border: 0;
+  width: auto;
+}
+
+.runner-form input[type='number'] {
+  width: 96px;
+}
+
+.taste-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.taste-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.taste-remove {
+  margin-top: 0 !important;
+  padding: 4px 8px !important;
+  background: transparent !important;
+  color: #a12b1a !important;
+  font-size: 14px !important;
+}
+
+.taste-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.taste-options fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.taste-options legend {
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #666;
+}
+
+.option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.option-row label,
+.option-check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
