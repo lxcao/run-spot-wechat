@@ -24,6 +24,12 @@ test('findFood by id', () => {
   assert.equal(f.name, '法式香酥可颂');
 });
 
+test('findFood black truffle chicken sandwich', () => {
+  const f = findFood(menu, 'f-black-truffle-chicken-sandwich');
+  assert.equal(f.name, '黑松露鸡肉三明治');
+  assert.equal(f.category, '早餐三明治');
+});
+
 test('findFood unknown is null', () => {
   assert.equal(findFood(menu, 'nope'), null);
 });
