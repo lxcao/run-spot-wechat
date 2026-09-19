@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# miniprogram/cloudfunctions/_shared/copy-assert-admin.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SRC="$ROOT/_shared/assertAdmin.js"
-for fn in createEvent deleteEvent updateEventPhotos updateEvent deletePhoto; do
-  dest="$ROOT/$fn"
-  mkdir -p "$dest"
-  cp "$SRC" "$dest/assertAdmin.js"
+cp "$ROOT/_shared/assertAdmin.js" "$ROOT/createEvent/assertAdmin.js"
+cp "$ROOT/_shared/assertAdmin.js" "$ROOT/deleteEvent/assertAdmin.js"
+cp "$ROOT/_shared/assertAdmin.js" "$ROOT/updateEventPhotos/assertAdmin.js"
+cp "$ROOT/_shared/assertAdmin.js" "$ROOT/updateEvent/assertAdmin.js"
+cp "$ROOT/_shared/assertAdmin.js" "$ROOT/deletePhoto/assertAdmin.js"
+for fn in createRunner updateRunner deleteRunner listRunners; do
+  mkdir -p "$ROOT/$fn"
+  cp "$ROOT/_shared/assertAdmin.js" "$ROOT/$fn/assertAdmin.js"
+  cp "$ROOT/_shared/menu.js" "$ROOT/$fn/menu.js"
+  cp "$ROOT/_shared/runners.js" "$ROOT/$fn/runners.js"
 done
-echo "copied assertAdmin.js into function folders"
+echo "copied shared modules"

@@ -61,9 +61,12 @@ export function EventListPage() {
           <h1>{team?.name || '活动列表'}</h1>
           {team?.slogan ? <p className="list-slogan">{team.slogan}</p> : null}
         </div>
-        <Link to="/events/new" className="list-new">
-          + 新活动
-        </Link>
+        <div>
+          <Link to="/runners" className="list-secondary">跑友口味</Link>
+          <Link to="/events/new" className="list-new">
+            + 新活动
+          </Link>
+        </div>
       </header>
 
       <div className="list-filters">

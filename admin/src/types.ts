@@ -39,3 +39,34 @@ export type Team = {
   admins?: string[];
   webAdmins?: string[];
 };
+
+export type MenuOption = { group: string; id: string; label: string };
+
+export type RunnerDrink = {
+  itemId: string;
+  name: string;
+  options: MenuOption[];
+};
+
+export type RunnerFood = {
+  itemId: string;
+  name: string;
+};
+
+export type Runner = {
+  id: string;
+  nickname: string;
+  drinks: RunnerDrink[];
+  foods: RunnerFood[];
+};
+
+export type MenuItem = { id: string; category: string; name: string; subtitle?: string; new?: boolean };
+
+export type MenuChoice = { id: string; label: string; recommended?: boolean };
+
+export type StarbucksMenu = {
+  id: string;
+  customizations: Record<string, unknown>;
+  drinks: MenuItem[];
+  foods: MenuItem[];
+};

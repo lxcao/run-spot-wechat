@@ -1,6 +1,6 @@
 # 网页后台 · 甲骨文魔都跑团
 
-> 管理员用用户名密码登录后，对 CloudBase 里的活动做增删改查并管理照片。
+> 管理员用用户名密码登录后，对 CloudBase 里的活动做增删改查、管理照片，并按群昵称代填跑友星巴克口味。
 >
 > 与 `h5/`、`miniprogram/` 同级；部署到同一静态托管的 `/admin/` 路径，**不要**发到根路径，否则会覆盖 H5。
 
@@ -12,7 +12,7 @@
 cd admin && npm install && npm run dev
 ```
 
-默认打开 Vite 开发地址（通常 `http://localhost:5173`）。路由是 hash（`#/login`、`#/`、`#/events/new`、`#/events/:id`）。
+默认打开 Vite 开发地址（通常 `http://localhost:5173`）。路由是 hash（`#/login`、`#/`、`#/events/new`、`#/events/:id`、`#/runners`、`#/runners/new`、`#/runners/:id`）。
 
 ---
 
@@ -66,6 +66,18 @@ VITE_PUBLISHABLE_KEY=<从 CloudBase 控制台或 MCP getPublishableKey 获取>
 
 ---
 
+## ☕ 跑友口味
+
+| 路由 | 页面 |
+|---|---|
+| `#/runners` | 跑友口味列表 |
+| `#/runners/new` | 新建（群昵称 + 咖啡配置 + 餐） |
+| `#/runners/:id` | 编辑已有跑友 |
+
+菜单来自云数据库 `starbucksMenu`（仓库 [`data/starbucks-menu.json`](../data/starbucks-menu.json) 导入，文档 `id = current`）。后台**不**编辑菜单目录；季节款改 JSON 再覆盖导入。管理员只按微信群名片代填口味。
+
+---
+
 ## 📦 部署
 
 这个环境里 `manageApps` 和 H5 **共用同一个静态托管桶**。用 `manageApps` 部署 `admin` 会覆盖群通知页，**不要再用**。
@@ -109,11 +121,11 @@ CORS 安全域名需要：
 ```
 admin/
 ├── src/
-│   ├── pages/            # 登录、未授权、活动列表、新建/编辑
+│   ├── pages/            # 登录、未授权、活动列表、新建/编辑、跑友口味
 │   ├── components/       # 高德地址联想、照片墙
 │   └── lib/              # CloudBase SDK、鉴权、云函数封装
 ├── .env.example
 └── README.md             # 本文件
 ```
 
-写操作全部走云函数（`createEvent` / `updateEvent` / `deleteEvent` / `updateEventPhotos` / `deletePhoto`），浏览器不直接写 NoSQL。
+写操作全部走云函数（`createEvent` / `updateEvent` / `deleteEvent` / `updateEventPhotos` / `deletePhoto` / `createRunner` / `updateRunner` / `deleteRunner`），浏览器不直接写 NoSQL。菜单只读：`getStarbucksMenu`。跑友名单：`listRunners`。
