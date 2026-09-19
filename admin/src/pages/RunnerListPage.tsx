@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { callFn } from '../lib/api';
-import { formatDrinkLine } from '../lib/runners';
+import { formatPreviewLines } from '../lib/runners';
 import type { Runner } from '../types';
 
 export function RunnerListPage() {
@@ -53,7 +53,7 @@ export function RunnerListPage() {
           </p>
           <h1>跑友口味</h1>
         </div>
-        <Link to="/runners/new" className="list-new">
+        <Link to="/dining/new" className="list-new">
           + 新跑友
         </Link>
       </header>
@@ -70,13 +70,13 @@ export function RunnerListPage() {
       <ul className="event-list">
         {runners.map((runner) => (
           <li key={runner.id} className="runner-row">
-            <Link to={`/runners/${runner.id}`} className="event-card">
+            <Link to={`/dining/${runner.id}`} className="event-card">
               <strong>{runner.nickname}</strong>
               <span className="event-meta">
                 咖啡 {runner.drinks.length} · 餐 {runner.foods.length}
               </span>
-              {runner.drinks.slice(0, 2).map((d, i) => (
-                <span key={i} className="event-meta">{formatDrinkLine(d)}</span>
+              {formatPreviewLines(runner).map((line, i) => (
+                <span key={i} className="event-meta">{line}</span>
               ))}
             </Link>
             <button

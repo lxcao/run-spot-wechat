@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import { callFn } from './lib/api';
 import { readSession, readUid } from './lib/auth';
 import { checkWebAdmin } from './lib/events';
@@ -73,15 +73,23 @@ function ProtectedLayout() {
   return <Outlet />;
 }
 
+function RedirectLegacyRunner() {
+  const { id } = useParams();
+  return <Navigate to={id ? `/dining/${id}` : '/dining'} replace />;
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={<EventListPage />} />
-        <Route path="/runners" element={<RunnerListPage />} />
-        <Route path="/runners/new" element={<RunnerFormPage key="create" mode="create" />} />
-        <Route path="/runners/:id" element={<RunnerFormPage mode="edit" />} />
+        <Route path="/dining" element={<RunnerListPage />} />
+        <Route path="/dining/new" element={<RunnerFormPage key="create" mode="create" />} />
+        <Route path="/dining/:id" element={<RunnerFormPage mode="edit" />} />
+        <Route path="/runners" element={<Navigate to="/dining" replace />} />
+        <Route path="/runners/new" element={<Navigate to="/dining/new" replace />} />
+        <Route path="/runners/:id" element={<RedirectLegacyRunner />} />
         <Route path="/events/new" element={<EventFormPage key="create" mode="create" />} />
         <Route path="/events/:id" element={<EventFormPage mode="edit" />} />
         <Route path="*" element={<Navigate to="/" replace />} />

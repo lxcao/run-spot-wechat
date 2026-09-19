@@ -164,7 +164,7 @@ run-spot-wechat（你电脑）     ← 改代码 + git push
 |---|---|
 | **H5 网页** | 纯 HTML + CSS + JS（无框架）<br>+ Leaflet 地图 + 高德瓦片<br>+ uri.amap.com 导航跳转<br>+ 高德天气 API |
 | **小程序** | 微信原生（wxml/wxss/js）<br>+ 小程序 `<map>` 组件（腾讯底图）<br>+ `wx.openLocation` 唤起系统地图<br>+ 微信云开发（云函数 + NoSQL + 云存储） |
-| **网页后台** | Vite + React + TypeScript<br>+ `@cloudbase/js-sdk` 用户名密码登录<br>+ HashRouter（`#/login`、`#/`、`#/events/:id`、`#/runners`、`#/runners/new`、`#/runners/:id`） |
+| **网页后台** | Vite + React + TypeScript<br>+ `@cloudbase/js-sdk` 用户名密码登录<br>+ HashRouter（`#/login`、`#/`、`#/events/:id`、`#/dining`、`#/dining/new`、`#/dining/:id`） |
 | **后端** | 微信云开发（个人版，免费）<br>+ **15 个云函数**（getEvents / getEvent / createEvent / updateEvent / deleteEvent / updateEventPhotos / deletePhoto / getWeather / getAddressSuggestions / checkAdmin / getStarbucksMenu / listRunners / createRunner / updateRunner / deleteRunner）<br>+ **4 个 NoSQL 集合**（events / team / starbucksMenu / runners）<br>+ **1 个云存储**（活动照片） |
 | **第三方** | 高德地图 Web Service API（地理编码 + 天气 + 地址联想） |
 

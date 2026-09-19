@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDrinkLine, emptyDraft } from './runners';
+import { formatDrinkLine, emptyDraft, formatPreviewLines } from './runners';
 
 describe('formatDrinkLine', () => {
   it('joins name and option labels', () => {
@@ -13,6 +13,26 @@ describe('formatDrinkLine', () => {
         ],
       })
     ).toBe('拿铁 · 大杯 · 冰');
+  });
+});
+
+describe('formatPreviewLines', () => {
+  it('includes both drinks and foods', () => {
+    expect(
+      formatPreviewLines({
+        drinks: [
+          {
+            itemId: 'd-blonde-americano',
+            name: '金烘美式咖啡',
+            options: [
+              { group: 'cupSize', id: 'venti', label: '超大杯' },
+              { group: 'temperature', id: 'warm', label: '微热' },
+            ],
+          },
+        ],
+        foods: [{ itemId: 'f-croissant', name: '法式香酥可颂' }],
+      }),
+    ).toEqual(['金烘美式咖啡 · 超大杯 · 微热', '法式香酥可颂']);
   });
 });
 

@@ -12,7 +12,7 @@
 cd admin && npm install && npm run dev
 ```
 
-默认打开 Vite 开发地址（通常 `http://localhost:5173`）。路由是 hash（`#/login`、`#/`、`#/events/new`、`#/events/:id`、`#/runners`、`#/runners/new`、`#/runners/:id`）。
+默认打开 Vite 开发地址（通常 `http://localhost:5173`）。路由是 hash（`#/login`、`#/`、`#/events/new`、`#/events/:id`、`#/dining`、`#/dining/new`、`#/dining/:id`）。静态托管没有服务端改写，路径写在 `#` 后面，刷新才不会 404。
 
 ---
 
@@ -72,9 +72,9 @@ VITE_PUBLISHABLE_KEY=<从 CloudBase 控制台或 MCP getPublishableKey 获取>
 
 | 路由 | 页面 |
 |---|---|
-| `#/runners` | 跑友口味列表 |
-| `#/runners/new` | 新建（群昵称 + 咖啡配置 + 餐） |
-| `#/runners/:id` | 编辑已有跑友 |
+| `#/dining` | 跑友口味列表 |
+| `#/dining/new` | 新建（群昵称 + 咖啡配置 + 餐） |
+| `#/dining/:id` | 编辑已有跑友 |
 
 菜单来自云数据库 `starbucksMenu`（仓库 [`data/starbucks-menu.json`](../data/starbucks-menu.json) 导入，文档 `id = current`）。后台**不**编辑菜单目录；季节款改 JSON 再覆盖导入。管理员只按微信群名片代填口味。
 

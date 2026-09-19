@@ -62,7 +62,7 @@ export function EventListPage() {
           {team?.slogan ? <p className="list-slogan">{team.slogan}</p> : null}
         </div>
         <div>
-          <Link to="/runners" className="list-secondary">跑友口味</Link>
+          <Link to="/dining" className="list-secondary">跑友口味</Link>
           <Link to="/events/new" className="list-new">
             + 新活动
           </Link>

@@ -226,7 +226,7 @@ export function RunnerFormPage({ mode }: { mode: 'create' | 'edit' }) {
         setError(res.msg || '保存失败，请重试');
         return;
       }
-      navigate('/runners');
+      navigate('/dining');
     } catch {
       setError('保存失败，请重试');
     } finally {
@@ -255,7 +255,7 @@ export function RunnerFormPage({ mode }: { mode: 'create' | 'edit' }) {
   return (
     <main className="list-page">
       <p className="list-nav">
-        <Link to="/runners">跑友口味</Link>
+        <Link to="/dining">跑友口味</Link>
         <span> / {mode === 'create' ? '新增' : '编辑'}</span>
       </p>
       {loadError ? <p className="auth-error" role="alert">{loadError}</p> : null}
