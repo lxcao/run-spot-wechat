@@ -34,6 +34,8 @@ VITE_PUBLISHABLE_KEY=<从 CloudBase 控制台或 MCP getPublishableKey 获取>
 
 本地开发还需把 `localhost:5173` 加进环境安全域名（CORS）。
 
+发布到 `/admin/` 时，构建命令必须带上 `VITE_CLOUDBASE_ENV_ID`（和 publishable key）。缺环境 ID 时，线上会报 `INVALID_PARAMS` / `env must not be specified`——SDK 这条文案的意思是 **必须传 env**。
+
 ---
 
 ## 🔐 登录

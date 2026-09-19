@@ -1,29 +1,23 @@
-export function hostingInfersEnv(hostname: string): boolean {
-  return (
-    hostname.endsWith('.tcloudbaseapp.com') ||
-    hostname.endsWith('.webapps.tcloudbase.com') ||
-    hostname.endsWith('.tcb.qcloud.la')
-  );
-}
-
 export type CloudBaseInitConfig = {
-  env?: string;
+  env: string;
   region: string;
   accessKey?: string;
   auth: { detectSessionInUrl: true };
 };
 
 export function buildInitConfig(input: {
-  hostname: string;
-  env?: string;
+  env: string;
   region?: string;
   accessKey?: string;
 }): CloudBaseInitConfig {
+  if (!input.env) {
+    throw new Error('VITE_CLOUDBASE_ENV_ID is required');
+  }
   const config: CloudBaseInitConfig = {
+    env: input.env,
     region: input.region || 'ap-shanghai',
     auth: { detectSessionInUrl: true },
   };
   if (input.accessKey) config.accessKey = input.accessKey;
-  if (input.env && !hostingInfersEnv(input.hostname)) config.env = input.env;
   return config;
 }
