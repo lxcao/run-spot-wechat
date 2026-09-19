@@ -72,11 +72,13 @@ VITE_PUBLISHABLE_KEY=<从 CloudBase 控制台或 MCP getPublishableKey 获取>
 
 | 路由 | 页面 |
 |---|---|
-| `#/dining` | 跑友口味列表 |
+| `#/dining` | 跑友口味列表（预览同时列出咖啡和餐） |
 | `#/dining/new` | 新建（群昵称 + 咖啡配置 + 餐） |
 | `#/dining/:id` | 编辑已有跑友 |
 
-菜单来自云数据库 `starbucksMenu`（仓库 [`data/starbucks-menu.json`](../data/starbucks-menu.json) 导入，文档 `id = current`）。后台**不**编辑菜单目录；季节款改 JSON 再覆盖导入。管理员只按微信群名片代填口味。
+`#/runners`、`#/runners/new`、`#/runners/:id` 会重定向到上面的 `#/dining` 路径。
+
+菜单来自云数据库 `starbucksMenu`（仓库 [`data/starbucks-menu.json`](../data/starbucks-menu.json) 导入，文档 `id = current`）。后台**不**编辑菜单目录；季节款改 JSON 再覆盖导入。管理员只按微信群名片代填口味。列表卡片会同时显示咖啡行和餐名。
 
 ---
 
@@ -96,6 +98,10 @@ cd admin && npm run build
 后台地址：
 
 **https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/admin/**
+
+口味页：
+
+**https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/admin/#/dining**
 
 H5 仍在站点根路径：
 

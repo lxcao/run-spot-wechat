@@ -124,7 +124,13 @@ npm install && npm run dev
 
 https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/admin/
 
+口味名单：https://run-spot-prod-d1gb2jd1j3ce2e7fb-1486717042.tcloudbaseapp.com/admin/#/dining
+
+路由在 `#` 后面（`#/login`、`#/dining`）。静态托管没有服务端改写，这样刷新才不会 404。`#` 前面是文件路径 `/admin/`，后面是页面。
+
 登录用 CloudBase 用户名密码。没有注册入口。账号在控制台「用户管理」创建，uid 写入 `team` 集合 `id = meta` 的 `webAdmins` 数组（不要覆盖小程序用的 `admins`）。
+
+发布构建必须带上 `VITE_CLOUDBASE_ENV_ID`，否则线上会报 `INVALID_PARAMS`（SDK 文案是 `env must not be specified`，实际是没传环境 ID）。
 
 本地开发要把 `localhost:5173` 加进环境安全域名。完整说明见 [admin/README.md](admin/README.md)。
 
@@ -195,8 +201,9 @@ run-spot-wechat（你电脑）     ← 改代码 + git push
 5. 到店打开小程序「星巴克口味」，按名单代点咖啡和早餐
 
 星巴克口味（长期备忘，不是本场点单）：
-- 团长在网页后台录入群昵称 + 咖啡配置 + 餐
-- 菜单来自 starbucksMenu（仓库 JSON 导入），后台不改目录
+- 团长打开网页后台 `#/dining` 录入群昵称 + 咖啡配置 + 餐
+- 列表同时显示咖啡和餐；旧地址 `#/runners` 会跳到 `#/dining`
+- 菜单来自 `starbucksMenu`（仓库 JSON 导入），后台不改目录
 - 到店打开小程序「星巴克口味」只读名单
 
 每 1~2 周：
