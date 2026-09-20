@@ -30,6 +30,12 @@ test('findFood black truffle chicken sandwich', () => {
   assert.equal(f.category, '早餐三明治');
 });
 
+test('findFood yunnan mushroom beef baguette', () => {
+  const f = findFood(menu, 'f-yunnan-mushroom-beef-baguette');
+  assert.equal(f.name, '滇香菌菇牛肉法棍三明治');
+  assert.equal(f.category, '午餐精选');
+});
+
 test('findFood unknown is null', () => {
   assert.equal(findFood(menu, 'nope'), null);
 });
