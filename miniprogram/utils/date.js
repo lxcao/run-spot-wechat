@@ -11,10 +11,17 @@ function formatDate(iso) {
   };
 }
 
-function todayISO() {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d.toISOString().slice(0, 10);
+function todayISO(now = new Date()) {
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function annotateEventStatus(event, today = todayISO()) {
+  const date = event.date || '';
+  const _status = date < today ? 'past' : event.status === 'past' ? 'past' : 'upcoming';
+  return { ...event, _status };
 }
 
 function weatherEmoji(w) {
@@ -22,4 +29,4 @@ function weatherEmoji(w) {
   return map[w] || '🌤️';
 }
 
-module.exports = { formatDate, todayISO, weatherEmoji };
+module.exports = { formatDate, todayISO, annotateEventStatus, weatherEmoji };

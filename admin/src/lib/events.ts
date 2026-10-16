@@ -14,10 +14,12 @@ export function checkWebAdmin(team: { webAdmins?: string[] } | null, uid: string
 }
 
 export function todayISO(now = new Date()) {
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(now);
 }
 
 export function annotateEventStatus<T extends { date: string; status?: string }>(
@@ -25,11 +27,7 @@ export function annotateEventStatus<T extends { date: string; status?: string }>
   today = todayISO(),
 ): T & { _status: string } {
   const _status =
-    event.status === 'upcoming' || event.status === 'past'
-      ? event.status
-      : event.date >= today
-        ? 'upcoming'
-        : 'past';
+    event.date < today ? 'past' : event.status === 'past' ? 'past' : 'upcoming';
   return { ...event, _status };
 }
 

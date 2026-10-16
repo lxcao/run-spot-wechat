@@ -4,6 +4,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const db = cloud.database();
+const { expireStoredStatus, todayISO } = require('./eventStatus');
 
 // 跑团基本信息从 team 集合读取（id='meta' 单条记录）
 async function getTeam() {
@@ -36,12 +37,13 @@ exports.main = async (event, context) => {
       getTeam(),
       db.collection('events').orderBy('date', 'asc').get(),
     ]);
+    const today = todayISO();
     return {
       code: 0,
       msg: 'ok',
       data: {
         team: teamRes,
-        events: eventsRes.data,
+        events: eventsRes.data.map((event) => expireStoredStatus(event, today)),
       },
     };
   } catch (err) {

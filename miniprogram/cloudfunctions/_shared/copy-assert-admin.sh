@@ -2,6 +2,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cp "$ROOT/_shared/assertAdmin.js" "$ROOT/createEvent/assertAdmin.js"
+cp "$ROOT/_shared/eventStatus.js" "$ROOT/createEvent/eventStatus.js"
+cp "$ROOT/_shared/eventStatus.js" "$ROOT/getEvents/eventStatus.js"
 cp "$ROOT/_shared/assertAdmin.js" "$ROOT/deleteEvent/assertAdmin.js"
 cp "$ROOT/_shared/assertAdmin.js" "$ROOT/updateEventPhotos/assertAdmin.js"
 cp "$ROOT/_shared/assertAdmin.js" "$ROOT/updateEvent/assertAdmin.js"

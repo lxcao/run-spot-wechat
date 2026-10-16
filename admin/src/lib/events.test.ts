@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { annotateEventStatus, splitEvents, checkWebAdmin, isCreateRoute } from './events';
+import { annotateEventStatus, splitEvents, checkWebAdmin, isCreateRoute, todayISO } from './events';
 
 const events = [
   { id: '2026-09-26', date: '2026-09-26', _status: 'upcoming', title: 'A' },
@@ -26,12 +26,26 @@ describe('splitEvents', () => {
   });
 });
 
+describe('todayISO', () => {
+  it('uses the Shanghai calendar date', () => {
+    expect(todayISO(new Date('2026-09-30T00:30:00+08:00'))).toBe('2026-09-30');
+    expect(todayISO(new Date('2026-09-30T16:00:00Z'))).toBe('2026-10-01');
+  });
+});
+
 describe('annotateEventStatus', () => {
-  it('prefers handwritten status, else date vs today', () => {
-    const today = '2026-09-16';
-    expect(annotateEventStatus({ date: '2020-01-01', status: 'upcoming' }, today)._status).toBe('upcoming');
+  const today = '2026-09-30';
+
+  it('treats a past date as past even if stored status is upcoming', () => {
+    expect(annotateEventStatus({ date: '2026-09-19', status: 'upcoming' }, today)._status).toBe('past');
+  });
+
+  it('keeps a future date as past when handwritten past', () => {
     expect(annotateEventStatus({ date: '2030-01-01', status: 'past' }, today)._status).toBe('past');
-    expect(annotateEventStatus({ date: '2026-09-16' }, today)._status).toBe('upcoming');
+  });
+
+  it('uses date vs today when status is not set', () => {
+    expect(annotateEventStatus({ date: '2026-09-30' }, today)._status).toBe('upcoming');
     expect(annotateEventStatus({ date: '2026-09-15' }, today)._status).toBe('past');
   });
 });

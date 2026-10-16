@@ -8,6 +8,7 @@ const https = require('https');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const { assertAdmin } = require('./assertAdmin');
+const { todayISO } = require('./eventStatus');
 
 const AMAP_KEY = 'daa291695ce6f29af3b05436ab1122da';
 const CITY = '上海';
@@ -77,11 +78,11 @@ exports.main = async (event, context) => {
   }
 
   // 允许过去日期（用于添加历史活动）
-  const todayISO = new Date().toISOString().slice(0, 10);
+  const today = todayISO();
   // 智能判断 status（如果用户没指定）：
   // - 日期 >= 今天 → upcoming
   // - 日期 < 今天 → past
-  const autoStatus = date >= todayISO ? 'upcoming' : 'past';
+  const autoStatus = date >= today ? 'upcoming' : 'past';
   const finalStatus = (status === 'upcoming' || status === 'past') ? status : autoStatus;
 
   const id = generateId(date);

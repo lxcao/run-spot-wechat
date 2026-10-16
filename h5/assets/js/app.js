@@ -26,9 +26,11 @@ const App = (() => {
   };
 
   const todayISO = () => {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d.toISOString().slice(0, 10);
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
   };
 
   // 数据加载
@@ -41,12 +43,7 @@ const App = (() => {
     DATA.events.forEach((e) => {
       e._date = formatDate(e.date);
       e._isToday = e.date === today;
-      // 优先用 events.json 里手设的 status，没设才按日期自动判断
-      if (e.status === "upcoming" || e.status === "past") {
-        e._status = e.status;
-      } else {
-        e._status = e.date >= today ? "upcoming" : "past";
-      }
+      e._status = e.date < today ? "past" : e.status === "past" ? "past" : "upcoming";
     });
     return DATA;
   }

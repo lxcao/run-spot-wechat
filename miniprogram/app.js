@@ -1,4 +1,6 @@
 // app.js (v2 · 云函数版)
+const { todayISO, annotateEventStatus } = require('./utils/date.js');
+
 App({
   globalData: {
     team: null,
@@ -24,20 +26,11 @@ App({
       const res = await wx.cloud.callFunction({ name: 'getEvents' });
       if (res.result && res.result.code === 0) {
         const { team, events } = res.result.data;
-        const todayISO = () => {
-          const d = new Date();
-          d.setHours(0, 0, 0, 0);
-          return d.toISOString().slice(0, 10);
-        };
         const today = todayISO();
         events.forEach((e) => {
           e._date = formatDate(e.date);
           e._isToday = e.date === today;
-          if (e.status === 'upcoming' || e.status === 'past') {
-            e._status = e.status;
-          } else {
-            e._status = e.date >= today ? 'upcoming' : 'past';
-          }
+          e._status = annotateEventStatus(e, today)._status;
         });
         this.globalData.team = team;
         this.globalData.events = events;
